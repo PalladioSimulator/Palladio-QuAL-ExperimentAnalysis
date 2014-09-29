@@ -30,9 +30,8 @@ public final class KeepLastElementPriorToLowerBoundStrategy implements
 			Measure<Double, Duration> newLowerBound) {
 		assert !currentData.isEmpty();
 
-		return (Double) (currentData.peekFirst().getMeasureForMetric(
-				MetricDescriptionConstants.POINT_IN_TIME_METRIC).getValue()) < newLowerBound
-				.getValue();
+		Measure<Double, Duration> pointInTime = currentData.peekFirst().getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+		return pointInTime.compareTo(newLowerBound) < 0;
 	}
 
 	@Override
