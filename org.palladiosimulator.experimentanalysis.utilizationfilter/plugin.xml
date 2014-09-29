@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.palladiosimulator.edp2.datastream.chainDescription">
+      <chainDescription
+            id="UtilizationSlidingWindow"
+            name="Utilization (Sliding Window)">
+         <filter
+               filterClass="org.palladiosimulator.experimentanalysis.utilizationfilter.UtilizationFilter">
+         </filter>
+         <datasink
+               sinkID="org.palladiosimulator.edp2.visualization.inputs.ScatterPlotInput">
+         </datasink>
+      </chainDescription>
+   </extension>
+   <extension
+         point="org.eclipse.ui.elementFactories">
+      <factory
+            class="org.palladiosimulator.experimentanalysis.utilizationfilter.UtilizationFilterInputFactory"
+            id="org.palladiosimulator.experimentanalysis.utilizationfilter.UtilizationFilterInputFactory">
+      </factory>
+   </extension>
+</plugin>

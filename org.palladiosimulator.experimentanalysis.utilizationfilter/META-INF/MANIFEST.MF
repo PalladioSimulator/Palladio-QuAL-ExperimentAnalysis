@@ -1,0 +1,24 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Utilizationfilter
+Bundle-SymbolicName: org.palladiosimulator.experimentanalysis.utilizationfilter;singleton:=true
+Bundle-Version: 2.0.0.qualifier
+Bundle-Activator: org.palladiosimulator.experimentanalysis.utilizationfilter.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ org.palladiosimulator.edp2;bundle-version="2.0.0",
+ org.palladiosimulator.recorderframework.edp2;bundle-version="2.0.1",
+ org.palladiosimulator.edp2.dao;bundle-version="1.0.0",
+ org.palladiosimulator.edp2.util;bundle-version="1.0.0",
+ org.palladiosimulator.commons;bundle-version="1.0.0",
+ org.palladiosimulator.edp2.datastream,
+ org.palladiosimulator.measurementframework,
+ org.jscience,
+ org.palladiosimulator.recorderframework;bundle-version="2.0.1",
+ org.palladiosimulator.edp2.visualization;bundle-version="1.0.0",
+ org.palladiosimulator.experimentanalysis
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Import-Package: de.uka.ipd.sdq.simucomframework.model
+Export-Package: org.palladiosimulator.experimentanalysis.utilizationfilter
+  
