@@ -14,7 +14,7 @@ import org.palladiosimulator.experimentanalysis.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.Measurement;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.recorderframework.IRecorder;
-import org.palladiosimulator.recorderframework.launch.IRecorderConfiguration;
+import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 
 public abstract class SlidingWindowAggregatorTest {
 
@@ -82,6 +82,18 @@ public abstract class SlidingWindowAggregatorTest {
 		@Override
 		public void flush() {
 		}
+
+        @Override
+        public void newMeasurementAvailable(Measurement arg0) {
+            // TODO implementation needed?
+            
+        }
+
+        @Override
+        public void preUnregister() {
+            // TODO implementation needed?
+            
+        }
 	}
 }
 

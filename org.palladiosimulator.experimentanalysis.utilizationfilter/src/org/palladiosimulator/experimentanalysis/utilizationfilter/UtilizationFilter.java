@@ -20,7 +20,7 @@ import org.palladiosimulator.measurementframework.Measurement;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.recorderframework.IRecorder;
-import org.palladiosimulator.recorderframework.launch.IRecorderConfiguration;
+import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 
 /**
  * This class is a moving average implementation that calculates the utilization of an active
@@ -170,6 +170,18 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
         @Override
         public void flush() {
             this.outputData.clear();
+        }
+
+        @Override
+        public void newMeasurementAvailable(Measurement arg0) {
+            // TODO implement me?
+            
+        }
+
+        @Override
+        public void preUnregister() {
+            // TODO implement me?
+            
         }
 
     }
