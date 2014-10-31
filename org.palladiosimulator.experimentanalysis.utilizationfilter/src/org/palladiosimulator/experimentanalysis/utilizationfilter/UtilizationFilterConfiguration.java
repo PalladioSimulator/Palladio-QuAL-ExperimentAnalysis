@@ -31,6 +31,22 @@ public final class UtilizationFilterConfiguration extends ReflectivePropertyConf
 	private Measure<Double, Duration> windowIncrement;
 	
 	/**
+     * Gets the default value of the <b>window increment</b> property.
+     * @return A {@link Measure} denoting the default value of the property.
+     */
+	public static Measure<Double, Duration> getDefaultWindowIncrement() {
+	    return DEFAULT_WINDOW_INCREMENT;
+	}
+	
+	/**
+     * Gets the default value of the <b>window length</b> property.
+     * @return A {@link Measure} denoting the default value of the property.
+     */
+	public static Measure<Double, Duration> getDefaultWindowLength() {
+	    return DEFAULT_WINDOW_LENGTH;
+	}
+	
+	/**
 	 * Gets the current value of the <b>window increment</b> property.
 	 * @return A {@link Measure} denoting the value of the property.
 	 */
