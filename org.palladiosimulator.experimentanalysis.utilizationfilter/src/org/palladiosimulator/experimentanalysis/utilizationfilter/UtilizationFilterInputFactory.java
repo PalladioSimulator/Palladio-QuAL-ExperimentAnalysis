@@ -4,7 +4,7 @@ import org.eclipse.ui.IMemento;
 import org.palladiosimulator.edp2.datastream.configurable.DataSinkElementFactory;
 import org.palladiosimulator.edp2.datastream.configurable.IPropertyConfigurable;
 
-class UtilizationFilterInputFactory extends DataSinkElementFactory {
+public class UtilizationFilterInputFactory extends DataSinkElementFactory {
 
 	static final String FACTORY_ID = UtilizationFilterInputFactory.class.getCanonicalName();
 	
