@@ -3,8 +3,9 @@ package org.palladiosimulator.experimentanalysis;
 import java.util.Arrays;
 
 import org.palladiosimulator.measurementframework.Measurement;
-import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
+
 import org.palladiosimulator.recorderframework.AbstractRecorder;
+import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 
 /**
  * This class implements a {@link Recorder} which writes incoming data into a
@@ -105,3 +106,4 @@ public class SlidingWindowRecorder extends AbstractRecorder {
 
 	}
 }
+  
