@@ -173,14 +173,14 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
         }
 
         @Override
-        public void newMeasurementAvailable(Measurement arg0) {
-            // TODO implement me?
+        public void newMeasurementAvailable(Measurement newMeasurement) {
+            // TODO Auto-generated method stub
             
         }
 
         @Override
         public void preUnregister() {
-            // TODO implement me?
+            // TODO Auto-generated method stub
             
         }
 
