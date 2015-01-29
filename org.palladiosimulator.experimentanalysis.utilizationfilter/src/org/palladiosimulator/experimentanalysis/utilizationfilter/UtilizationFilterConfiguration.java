@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
 
 import org.palladiosimulator.edp2.datastream.configurable.reflective.ConfigurationProperty;
 import org.palladiosimulator.edp2.datastream.configurable.reflective.ReflectivePropertyConfigurable;
@@ -81,5 +82,38 @@ public final class UtilizationFilterConfiguration extends ReflectivePropertyConf
 				
 		return result;
 	}
+	
+	@Override
+	public void propertyChanged(String key, Object oldValue, Object newValue) {
+	    Object checkedValue = newValue;
+	    if (newValue != getNotSetConstant()) {
+            if (WINDOW_LENGTH_KEY.equals(key) || WINDOW_INCREMENT_KEY.equals(key)) {
+                checkedValue = checkGetDurationMeasure(checkedValue);
+            }
+	    }
+	    super.propertyChanged(key, oldValue, checkedValue);
+	}
+	
+	@SuppressWarnings("unchecked")
+    private Measure<Double, Duration> checkGetDurationMeasure(Object value) {
+	    if (value == null) {
+            throw new IllegalArgumentException("Given measure must not be null.");
+        } else if (!(value instanceof Measure)) {
+            throw new IllegalArgumentException("Given measure must be a valid JScience measure.");
+        } else {
+            Measure<?, ?> measure = (Measure<?, ?>) value;
+            if (!(measure.getValue() instanceof Number)
+                    || !Duration.UNIT.isCompatible(measure.getUnit())) {
+                throw new IllegalArgumentException("Given measure must be a valid JScience duration measure.");
+            }
+            Number measureValue = (Number) measure.getValue(); 
+            if (!(Double.compare(0d, measureValue.doubleValue()) < 0)) {
+                throw new IllegalArgumentException("Given measure must denote a positive duration.");
+            }
+            return Measure.valueOf(measureValue.doubleValue(), (Unit<Duration>) measure.getUnit());            
+        }
+	}
+	
+	
 
 }

@@ -100,14 +100,12 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
          *            measurements.
          */
         private UtilizationFilterOutputDataStream(IDataStream<Measurement> inputData) {
-            Map<String, Object> currentFilterProperties = UtilizationFilter.this.getProperties();
-
-            @SuppressWarnings("unchecked")
-            Measure<Double, Duration> windowLength = (Measure<Double, Duration>) currentFilterProperties
-                    .get(UtilizationFilterConfiguration.WINDOW_LENGTH_KEY);
-            @SuppressWarnings("unchecked")
-            Measure<Double, Duration> windowIncrement = (Measure<Double, Duration>) currentFilterProperties
-                    .get(UtilizationFilterConfiguration.WINDOW_INCREMENT_KEY);
+            Measure<Double, Duration> windowLength = UtilizationFilter.this
+                    .<UtilizationFilterConfiguration>getConfiguration().getWindowLength();
+            
+            Measure<Double, Duration> windowIncrement = UtilizationFilter.this
+                    .<UtilizationFilterConfiguration>getConfiguration().getWindowIncrement();
+            
             this.slidingWindow = new UtilizationFilterSlidingWindow(windowLength, windowIncrement,
                     new SlidingWindowUtilizationAggregator(this));
             this.inputData = inputData;
