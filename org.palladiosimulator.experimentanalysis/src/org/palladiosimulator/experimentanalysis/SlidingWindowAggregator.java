@@ -1,5 +1,8 @@
 package org.palladiosimulator.experimentanalysis;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
@@ -19,8 +22,8 @@ import org.palladiosimulator.recorderframework.IRecorder;
  */
 public abstract class SlidingWindowAggregator implements ISlidingWindowListener {
 
-    private final IRecorder recorderToWriteInto;
-
+    private final Collection<IRecorder> recordersToWriteInto;
+        
     /**
      * Initializes a new instance of the {@link SlidingWindowAggregator} class with the given
      * parameter.
@@ -33,12 +36,20 @@ public abstract class SlidingWindowAggregator implements ISlidingWindowListener 
      *             If the given {@link IRecorder} is {@code null}.
      */
     public SlidingWindowAggregator(IRecorder recorderToWriteInto) {
-        if (recorderToWriteInto == null) {
-            throw new IllegalArgumentException("Given recorder must not be null.");
-        }
-        this.recorderToWriteInto = recorderToWriteInto;
+        this(Collections.singletonList(recorderToWriteInto));
     }
 
+    public SlidingWindowAggregator(Collection<IRecorder> recordersToWriteInto) {
+        if (recordersToWriteInto == null || recordersToWriteInto.isEmpty()) {
+            throw new IllegalArgumentException("Given recorders collection must contain at least one recorder.");
+        }
+        this.recordersToWriteInto = recordersToWriteInto;
+    }
+    
+    public void addRecorder(IRecorder recorder) {
+        this.recordersToWriteInto.add(recorder);
+    }
+    
     /**
      * By implementing this method, subclasses (i.e., concrete aggregators) specify how the window
      * data is aggregated/processed and what resulting measurement is passed on to the attached
@@ -56,7 +67,8 @@ public abstract class SlidingWindowAggregator implements ISlidingWindowListener 
             Measure<Double, Duration> windowLeftBound, Measure<Double, Duration> windowLength);
 
     private void writeToRecorder(Measurement newMeasurement) {
-        this.recorderToWriteInto.writeData(newMeasurement);
+       for (IRecorder recorder : this.recordersToWriteInto)
+           recorder.writeData(newMeasurement);
     }
 
     @Override

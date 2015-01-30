@@ -46,7 +46,7 @@ public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator 
     public SlidingWindowUtilizationAggregator(IRecorder recorderToWriteInto) {
         super(recorderToWriteInto);
     }
-
+    
     @Override
     protected Measurement processWindowData(Iterable<Measurement> windowData,
             Measure<Double, Duration> windowLeftBound, Measure<Double, Duration> windowLength) {
