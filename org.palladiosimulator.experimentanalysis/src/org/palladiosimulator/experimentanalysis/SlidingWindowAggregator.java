@@ -1,5 +1,6 @@
 package org.palladiosimulator.experimentanalysis;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -36,14 +37,18 @@ public abstract class SlidingWindowAggregator implements ISlidingWindowListener 
      *             If the given {@link IRecorder} is {@code null}.
      */
     public SlidingWindowAggregator(IRecorder recorderToWriteInto) {
-        this(Collections.singletonList(recorderToWriteInto));
+        if (recorderToWriteInto == null)
+            throw new IllegalArgumentException("Given recorder must not be null.");
+        this.recordersToWriteInto = new ArrayList<>();
+        this.recordersToWriteInto.add(recorderToWriteInto);
     }
 
     public SlidingWindowAggregator(Collection<IRecorder> recordersToWriteInto) {
         if (recordersToWriteInto == null || recordersToWriteInto.isEmpty()) {
             throw new IllegalArgumentException("Given recorders collection must contain at least one recorder.");
         }
-        this.recordersToWriteInto = recordersToWriteInto;
+        this.recordersToWriteInto = new ArrayList<>();
+        this.recordersToWriteInto.addAll(recordersToWriteInto);
     }
     
     public void addRecorder(IRecorder recorder) {
