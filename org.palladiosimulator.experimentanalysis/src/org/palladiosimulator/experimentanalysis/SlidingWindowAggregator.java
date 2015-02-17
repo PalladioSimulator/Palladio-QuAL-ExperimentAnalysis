@@ -2,7 +2,6 @@ package org.palladiosimulator.experimentanalysis;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
