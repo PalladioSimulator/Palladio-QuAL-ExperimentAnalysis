@@ -31,6 +31,7 @@ import org.palladiosimulator.recorderframework.IRecorder;
 public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator {
 
     private static final MetricDescription EXPECTED_WINDOW_DATA_METRIC = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
+    private static final Amount<Duration> ZERO_DURATION = Amount.valueOf(0, SI.SECOND);
 
     /**
      * Initializes a new instance of the {@link SlidingWindowUtilizationAggregator} class with the
@@ -56,7 +57,7 @@ public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator 
         Amount<Duration> windowRightBoundAmount = windowLengthAmount.plus(windowLeftBoundAmount);
 
         Measurement result = null;
-        Amount<Duration> busyTime = Amount.valueOf(0L, SI.SECOND);
+        Amount<Duration> busyTime = ZERO_DURATION;
         Iterator<Measurement> iterator = windowData.iterator();
 
         if (iterator.hasNext()) {
@@ -111,10 +112,11 @@ public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator 
      */
     private static Measurement createUtilizationTupleMeasurement(Amount<Duration> busyTime,
             Amount<Duration> windowLength, Amount<Duration> pointInTime) {
-
+        
+        assert windowLength.isGreaterThan(ZERO_DURATION);
+        
         @SuppressWarnings("unchecked")
         Amount<Dimensionless> utilization = (Amount<Dimensionless>) busyTime.divide(windowLength);
-
         Measure<Double, Dimensionless> resultUtilizationMeasure = Measure.valueOf(utilization.doubleValue(Unit.ONE),
                 Unit.ONE);
         Measure<Double, Duration> resultPointInTimeMeasure = Measure.valueOf(pointInTime.doubleValue(pointInTime.getUnit()),
