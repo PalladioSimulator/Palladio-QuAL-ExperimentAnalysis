@@ -3,7 +3,6 @@ package org.palladiosimulator.experimentanalysis.utilizationfilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
@@ -16,7 +15,7 @@ import org.palladiosimulator.edp2.datastream.IDataStream;
 import org.palladiosimulator.edp2.datastream.configurable.PropertyConfigurable;
 import org.palladiosimulator.edp2.datastream.filter.AbstractFilter;
 import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.recorderframework.IRecorder;
@@ -70,9 +69,9 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
      *             if no input data source has been set beforehand.
      */
     @Override
-    public IDataStream<Measurement> getDataStream() {
+    public IDataStream<MeasuringValue> getDataStream() {
         if (this.getDataSource() != null) {
-            IDataStream<Measurement> inputData = this.getDataSource().getDataStream();
+            IDataStream<MeasuringValue> inputData = this.getDataSource().getDataStream();
             return new UtilizationFilterOutputDataStream(inputData);
         }
         throw new IllegalStateException("No input data available. UtilizationFilter cannot be applied.");
@@ -85,10 +84,10 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
      * @author Florian Rosenthal
      *
      */
-    private final class UtilizationFilterOutputDataStream implements IDataStream<Measurement>, IRecorder {
+    private final class UtilizationFilterOutputDataStream implements IDataStream<MeasuringValue>, IRecorder {
 
-        private final IDataStream<Measurement> inputData;
-        private final List<Measurement> outputData;
+        private final IDataStream<MeasuringValue> inputData;
+        private final List<MeasuringValue> outputData;
         private final UtilizationFilterSlidingWindow slidingWindow;
 
         /**
@@ -99,7 +98,7 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
          *            A {@link IDataStream} containing {@code state of active resource tuple}
          *            measurements.
          */
-        private UtilizationFilterOutputDataStream(IDataStream<Measurement> inputData) {
+        private UtilizationFilterOutputDataStream(IDataStream<MeasuringValue> inputData) {
             Measure<Double, Duration> windowLength = UtilizationFilter.this
                     .<UtilizationFilterConfiguration>getConfiguration().getWindowLength();
             
@@ -109,7 +108,7 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
             this.slidingWindow = new UtilizationFilterSlidingWindow(windowLength, windowIncrement,
                     new SlidingWindowUtilizationAggregator(this));
             this.inputData = inputData;
-            this.outputData = new ArrayList<Measurement>();
+            this.outputData = new ArrayList<MeasuringValue>();
             initializeOutputStream();
         }
 
@@ -120,7 +119,7 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
          */
         private void initializeOutputStream() {
             // write all the data into the window
-            for (Measurement measurement : inputData) {
+            for (MeasuringValue measurement : inputData) {
                 this.slidingWindow.addMeasurement(measurement);
             }
             // handle the case that the last measurement is prior to window length, deal with last
@@ -129,7 +128,7 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
         }
 
         @Override
-        public Iterator<Measurement> iterator() {
+        public Iterator<MeasuringValue> iterator() {
             return outputData.iterator();
         }
 
@@ -161,7 +160,7 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
         }
 
         @Override
-        public void writeData(Measurement measurement) {
+        public void writeData(MeasuringValue measurement) {
             this.outputData.add(measurement);
         }
 
@@ -171,7 +170,7 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
         }
 
         @Override
-        public void newMeasurementAvailable(Measurement newMeasurement) {
+        public void newMeasurementAvailable(MeasuringValue newMeasurement) {
             // TODO Auto-generated method stub
             
         }

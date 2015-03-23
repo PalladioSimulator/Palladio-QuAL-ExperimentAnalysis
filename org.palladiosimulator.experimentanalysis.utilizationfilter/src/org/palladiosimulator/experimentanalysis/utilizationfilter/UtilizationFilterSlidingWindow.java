@@ -3,10 +3,11 @@ package org.palladiosimulator.experimentanalysis.utilizationfilter;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
+import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
@@ -82,7 +83,7 @@ final class UtilizationFilterSlidingWindow extends SlidingWindow {
     }
 
     @Override
-    public void addMeasurement(Measurement newMeasurement) {
+    public void addMeasurement(MeasuringValue newMeasurement) {
         super.checkAddMeasurementPrerequisites(newMeasurement);
         Measure<Double, Duration> pointInTime = newMeasurement
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
