@@ -26,7 +26,7 @@ import org.palladiosimulator.edp2.datastream.configurable.PropertyConfigurable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.experimentanalysis.utilizationfilter.UtilizationFilter;
 import org.palladiosimulator.experimentanalysis.utilizationfilter.UtilizationFilterConfiguration;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.measurementframework.measureprovider.IMeasureProvider;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -37,7 +37,7 @@ public class UtilizationFilterTest {
 
 	private UtilizationFilter filterUnderTest;
 	private IDataSource inputData;
-	private Measurement expectedUtilization;
+	private MeasuringValue expectedUtilization;
 	private PropertyConfigurable filterUnderTestProperties;
 	private Measure<Double, Duration> defaultWindowLength;
 	private static final MetricSetDescription expectedInputDataMetric = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
@@ -75,14 +75,14 @@ public class UtilizationFilterTest {
 	public void testGetDataStream() {
 		// make sure that input data is set, then obtain result stream
 		this.filterUnderTest.setDataSource(inputData);
-		IDataStream<Measurement> result = this.filterUnderTest.getDataStream();
+		IDataStream<MeasuringValue> result = this.filterUnderTest.getDataStream();
 		// now check whether the result stream is as expected: one utilization
 		// measure is expected
 		assertTrue(result.isCompatibleWith(expectedOutputDataMetric));
 		assertEquals(expectedOutputDataMetric, result.getMetricDesciption());
 		assertEquals(1, result.size());
 		
-		Measurement measurement = result.iterator().next();
+		MeasuringValue measurement = result.iterator().next();
 		assertTrue(measurement.isCompatibleWith(expectedOutputDataMetric));
 		Measure<Double, Dimensionless> expected = this.expectedUtilization.getMeasureForMetric(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE);
 		Measure<Double, Dimensionless> actual = measurement.getMeasureForMetric(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE);
@@ -101,7 +101,7 @@ public class UtilizationFilterTest {
 
 	private static class MockDataSource extends AbstractDataSource {
 
-		private List<Measurement> data = new ArrayList<Measurement>();
+		private List<MeasuringValue> data = new ArrayList<>();
 		private Measure<Double, Duration> windowLength;
 
 		private MockDataSource(MetricDescription metric,
