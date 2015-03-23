@@ -3,7 +3,7 @@ package org.palladiosimulator.experimentanalysis;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 
 /**
@@ -27,13 +27,13 @@ public interface ISlidingWindowListener {
      * 
      * @param windowData
      *            An {@link Iterable} containing the currently collected window data, that is, all
-     *            {@link Measurement}s within the window's current bounds.
+     *            {@link MeasuringValue}s within the window's current bounds.
      * @param windowLeftBound
      *            A {@link Measure} denoting the window's current lower/left bound.
      * @param windowLength
      *            A {@link Measure} denoting the current window length.
      */
-    public void onSlidingWindowFull(Iterable<Measurement> windowData, Measure<Double, Duration> windowLeftBound,
+    public void onSlidingWindowFull(Iterable<MeasuringValue> windowData, Measure<Double, Duration> windowLeftBound,
             Measure<Double, Duration> windowLength);
 
     /**

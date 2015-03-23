@@ -2,8 +2,7 @@ package org.palladiosimulator.experimentanalysis;
 
 import java.util.Arrays;
 
-import org.palladiosimulator.measurementframework.Measurement;
-
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.recorderframework.AbstractRecorder;
 import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 
@@ -90,7 +89,7 @@ public class SlidingWindowRecorder extends AbstractRecorder {
 	 *             called beforehand.
 	 */
 	@Override
-	public void writeData(Measurement measurement) {
+	public void writeData(MeasuringValue measurement) {
 		// just fill the sliding window
 		this.slidingWindow.addMeasurement(measurement);
 	}

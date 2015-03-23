@@ -6,7 +6,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
 /**
@@ -26,7 +26,7 @@ public final class KeepLastElementPriorToLowerBoundStrategy implements
 		ISlidingWindowMoveOnStrategy {
 
     private static boolean isFirstElementPriorToCurrentLowerBound(
-			Deque<Measurement> currentData,
+			Deque<MeasuringValue> currentData,
 			Measure<Double, Duration> newLowerBound) {
 		assert !currentData.isEmpty();
 
@@ -35,7 +35,7 @@ public final class KeepLastElementPriorToLowerBoundStrategy implements
 	}
 
 	@Override
-	public void adjustData(Deque<Measurement> currentData,
+	public void adjustData(Deque<MeasuringValue> currentData,
 			Measure<Double, Duration> newLowerBound,
 			Measure<Double, Duration> increment) {
 
@@ -44,7 +44,7 @@ public final class KeepLastElementPriorToLowerBoundStrategy implements
 						newLowerBound)) {
 			// this is the interesting case, otherwise: nothing to do as
 			// all elements are in window
-			Measurement first = currentData.pollFirst();
+		    MeasuringValue first = currentData.pollFirst();
 			while (!currentData.isEmpty()
 					&& isFirstElementPriorToCurrentLowerBound(currentData,
 							newLowerBound)) {

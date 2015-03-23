@@ -6,7 +6,7 @@ import java.util.Collection;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.recorderframework.IRecorder;
 
 /**
@@ -65,18 +65,18 @@ public abstract class SlidingWindowAggregator implements ISlidingWindowListener 
      *            A {@link Measure} denoting the new left bound of the sliding window.
      * @param windowLength
      *            A {@link Measure} denoting the length of the sliding window.
-     * @return A {@link Measurement} that is to be passed on to the attached recorder.
+     * @return A {@link MeasuringValue} that is to be passed on to the attached recorder.
      */
-    protected abstract Measurement processWindowData(Iterable<Measurement> windowData,
+    protected abstract MeasuringValue processWindowData(Iterable<MeasuringValue> windowData,
             Measure<Double, Duration> windowLeftBound, Measure<Double, Duration> windowLength);
 
-    private void writeToRecorder(Measurement newMeasurement) {
+    private void writeToRecorder(MeasuringValue newMeasurement) {
        for (IRecorder recorder : this.recordersToWriteInto)
            recorder.writeData(newMeasurement);
     }
 
     @Override
-    public final void onSlidingWindowFull(Iterable<Measurement> windowData, Measure<Double, Duration> windowLeftBound,
+    public final void onSlidingWindowFull(Iterable<MeasuringValue> windowData, Measure<Double, Duration> windowLeftBound,
             Measure<Double, Duration> windowLength) {
         writeToRecorder(processWindowData(windowData, windowLeftBound, windowLength));
     }

@@ -10,7 +10,8 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
@@ -38,7 +39,7 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
     private final Measure<Double, Duration> increment;
     private final MetricDescription acceptedMetrics;
     private final ISlidingWindowMoveOnStrategy moveOnStrategy;
-    private final Deque<Measurement> data = new LinkedList<Measurement>();
+    private final Deque<MeasuringValue> data = new LinkedList<>();
 
     /**
      * Initializes a new instance of the {@link SlidingWindow} class with the given parameters.
@@ -189,10 +190,10 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      * window's accepted metric.
      * 
      * @param measurement
-     *            A {@link Measurement} instance.
+     *            A {@link MeasuringValue} instance.
      * @return {@code true} if the measurement is compatible, otherwise {@code false}.
      */
-    private boolean measurementAdheresToMetric(Measurement measurement) {
+    private boolean measurementAdheresToMetric(MeasuringValue measurement) {
         return measurement.isCompatibleWith(this.acceptedMetrics);
     }
 
@@ -200,7 +201,7 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      * Adds a new measurement to the data this window collects.
      * 
      * @param newMeasurement
-     *            The {@link Measurement} instance to add.
+     *            The {@link MeasuringValue} instance to add.
      * @throws IllegalArgumentException
      *             If the given measurement is {@code null} or does not adhere to the metric this
      *             window accepts.
@@ -208,7 +209,7 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      *             If this window is not initialized, i.e.,
      *             {@link SlidingWindow#initialize(SimuComModel)} has not been called beforehand.
      */
-    public void addMeasurement(Measurement newMeasurement) {
+    public void addMeasurement(MeasuringValue newMeasurement) {
         checkAddMeasurementPrerequisites(newMeasurement);
         addMeasurementInternal(newMeasurement);
     }
@@ -218,12 +219,12 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      * additional (potentially more specific) prerequisites.
      * 
      * @param newMeasurement
-     *            The {@link Measurement} to be added to the window data.
+     *            The {@link MeasuringValue} to be added to the window data.
      * @throws IllegalArgumentException
      *             If the given measurement is {@code null} or does not adhere to the metric this
      *             window accepts.
      */
-    protected void checkAddMeasurementPrerequisites(Measurement newMeasurement) {
+    protected void checkAddMeasurementPrerequisites(MeasuringValue newMeasurement) {
         if (newMeasurement == null) {
             throw new IllegalArgumentException("Given measurement is null.");
         }
@@ -238,14 +239,14 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      * This method adds the given measurement to the window data. <b>No prerequisite checks are
      * performed.</b><br>
      * As this method is intended to be used by subclasses when they override
-     * {@link SlidingWindow#addMeasurement(Measurement)}, implementations should take care to call
-     * {@link SlidingWindow#checkAddMeasurementPrerequisites(Measurement)} beforehand to ensure
+     * {@link SlidingWindow#addMeasurement(MeasuringValue)}, implementations should take care to call
+     * {@link SlidingWindow#checkAddMeasurementPrerequisites(MeasuringValue)} beforehand to ensure
      * uncorrupt window data.
      * 
      * @param newMeasurement
      *            The {@link Measurement} to be added.
      */
-    protected final void addMeasurementInternal(Measurement newMeasurement) {
+    protected final void addMeasurementInternal(MeasuringValue newMeasurement) {
         Measure<?, Duration> pointInTime = newMeasurement
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         if (getCurrentLowerBound().compareTo(pointInTime) > 0) {
@@ -433,7 +434,7 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
          * @param increment
          *            A {@link Measure} indicating by what the window moved forward.
          */
-        public void adjustData(Deque<Measurement> currentData, Measure<Double, Duration> newLowerBound,
+        public void adjustData(Deque<MeasuringValue> currentData, Measure<Double, Duration> newLowerBound,
                 Measure<Double, Duration> increment);
     }
 }
