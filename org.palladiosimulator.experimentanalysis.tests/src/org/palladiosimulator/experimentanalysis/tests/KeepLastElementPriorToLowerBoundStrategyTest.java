@@ -1,6 +1,6 @@
 package org.palladiosimulator.experimentanalysis.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Deque;
 import java.util.LinkedList;
@@ -15,24 +15,24 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
 public class KeepLastElementPriorToLowerBoundStrategyTest {
 
-    private Deque<Measurement> data;
+    private Deque<MeasuringValue> data;
     private KeepLastElementPriorToLowerBoundStrategy strategyUnderTest;
     private Measure<Double, Duration> currentLowerBound;
     private Measure<Double, Duration> increment;
-    private Measurement expectedMeasurement;
+    private MeasuringValue expectedMeasurement;
     private final MetricSetDescription metricDescription = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
 
     @Before
     public void setUp() throws Exception {
         this.strategyUnderTest = new KeepLastElementPriorToLowerBoundStrategy();
-        this.data = new LinkedList<Measurement>();
+        this.data = new LinkedList<>();
 
         this.currentLowerBound = Measure.valueOf(0d, SI.SECOND);
         this.increment = Measure.valueOf(5d, SI.SECOND);

@@ -1,6 +1,8 @@
 package org.palladiosimulator.experimentanalysis.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
@@ -14,7 +16,7 @@ import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -24,7 +26,7 @@ public class SlidingWindowRecorderTest {
 	private SlidingWindowRecorder recorderUnderTest;
 	private SlidingWindow window;
 	private Measure<Double, Duration> windowLength;
-	private Measurement measurement;
+	private MeasuringValue measurement;
 	private ISlidingWindowListener windowListener;
 	
 	@Before

@@ -11,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.palladiosimulator.experimentanalysis.SlidingWindowAggregator;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.recorderframework.IRecorder;
 import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
@@ -20,14 +20,14 @@ public abstract class SlidingWindowAggregatorTest {
 
 	protected SlidingWindowAggregator aggregatorUnderTest;
 	protected StoreLastMeasurementRecorder dummyRecorder;
-	protected Deque<Measurement> data;
+	protected Deque<MeasuringValue> data;
 	protected Measure<Double, Duration> windowLength;
 	protected Measure<Double, Duration> currentLowerBound;
 	
 	
 	@Before
 	public void setUp() throws Exception {
-		this.data = new LinkedList<Measurement>();
+		this.data = new LinkedList<>();
 		this.windowLength = Measure.valueOf(10d, SI.SECOND);
 		this.currentLowerBound = Measure.valueOf(0d, SI.SECOND);
 		this.dummyRecorder = new StoreLastMeasurementRecorder();
@@ -55,7 +55,7 @@ public abstract class SlidingWindowAggregatorTest {
 		}
 		
 		@Override
-		protected Measurement processWindowData(Iterable<Measurement> windowData,
+		protected MeasuringValue processWindowData(Iterable<MeasuringValue> windowData,
 				Measure<Double, Duration> windowLeftBound,
 				Measure<Double, Duration> windowLength) {
 			return null;
@@ -64,14 +64,14 @@ public abstract class SlidingWindowAggregatorTest {
 	
 	static class StoreLastMeasurementRecorder implements IRecorder {
 
-		private Measurement lastMeasurement = null;
+		private MeasuringValue lastMeasurement = null;
 		
-		Measurement getLastMeasurement() {
+		MeasuringValue getLastMeasurement() {
 			return this.lastMeasurement;
 		}
 		
 		@Override
-		public void writeData(Measurement measurement) {
+		public void writeData(MeasuringValue measurement) {
 			this.lastMeasurement = measurement;
 		}
 		
@@ -84,15 +84,11 @@ public abstract class SlidingWindowAggregatorTest {
 		}
 
         @Override
-        public void newMeasurementAvailable(Measurement arg0) {
-            // TODO implementation needed?
-            
+        public void newMeasurementAvailable(MeasuringValue arg0) {
         }
 
         @Override
         public void preUnregister() {
-            // TODO implementation needed?
-            
         }
 	}
 }

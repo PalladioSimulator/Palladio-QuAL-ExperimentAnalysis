@@ -1,6 +1,8 @@
 package org.palladiosimulator.experimentanalysis.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Deque;
 
@@ -17,7 +19,7 @@ import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.measurementframework.BasicMeasurement;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -30,8 +32,8 @@ public abstract class SlidingWindowTest {
     protected Measure<Double, Duration> windowLength;
     protected Measure<Double, Duration> currentLowerBound;
     protected Measure<Double, Duration> increment;
-    protected Measurement measurement;
-    protected Measurement wrongMetricMeasurement;
+    protected MeasuringValue measurement;
+    protected MeasuringValue wrongMetricMeasurement;
     protected Measure<Double, Duration> pointInTimeMeasure;
     protected Measure<Long, Dimensionless> stateMeasure;
     protected ISlidingWindowMoveOnStrategy dummyStrategy;
@@ -175,7 +177,7 @@ public abstract class SlidingWindowTest {
         }
 
         @Override
-        public void onSlidingWindowFull(Iterable<Measurement> windowData, Measure<Double, Duration> windowLeftBound,
+        public void onSlidingWindowFull(Iterable<MeasuringValue> windowData, Measure<Double, Duration> windowLeftBound,
                 Measure<Double, Duration> windowLength) {
             // dummy, do nothing here
 
@@ -190,7 +192,7 @@ public abstract class SlidingWindowTest {
 
     static final class DummyMoveOnStrategy implements ISlidingWindowMoveOnStrategy {
         @Override
-        public void adjustData(Deque<Measurement> currentData, Measure<Double, Duration> newLowerBound,
+        public void adjustData(Deque<MeasuringValue> currentData, Measure<Double, Duration> newLowerBound,
                 Measure<Double, Duration> increment) {
             // dummy
         }
