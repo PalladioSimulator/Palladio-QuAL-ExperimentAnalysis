@@ -15,7 +15,7 @@
    <license url="http://www.example.com/license">
       [Enter License Description here.]
    </license>
-   
+
    <url>
       <discovery label="Palladio Commons" url="http://sdqweb.ipd.kit.edu/eclipse/commons/nightly/"/>
       <discovery label="ProbeFramework" url="http://sdqweb.ipd.kit.edu/eclipse/probeframework/nightly/"/>
@@ -26,7 +26,7 @@
       <discovery label="Eclipse Luna" url="http://download.eclipse.org/releases/luna"/>
       <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
    </url>
-   
+
    <includes
          id="org.palladiosimulator.experimentanalysis.feature"
          version="0.0.0"/>
