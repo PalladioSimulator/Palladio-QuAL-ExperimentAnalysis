@@ -10,6 +10,7 @@
   <rm:locator pattern="^org\.jscience.*" searchPathRef="thirdparty" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.edp2.*" searchPathRef="edp2" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="experimentanalysissvn" failOnError="false"/>
+  <rm:locator pattern="^org\.palladiosimulator\.servicelevelobjective.*" searchPathRef="ServiceLevelObjectives" failOnError="false"/>
   <rm:locator searchPathRef="MDSDProfiles" failOnError="false"/>
   <rm:locator searchPathRef="pcm" failOnError="false"/>
   <rm:locator pattern="^org\.eclipse\..*" searchPathRef="luna" failOnError="false"/>
