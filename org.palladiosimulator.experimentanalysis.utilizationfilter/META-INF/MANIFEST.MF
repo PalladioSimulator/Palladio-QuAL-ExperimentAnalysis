@@ -16,6 +16,5 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.experimentanalysis
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
-Import-Package: de.uka.ipd.sdq.simucomframework.model
 Export-Package: org.palladiosimulator.experimentanalysis.utilizationfilter
   
