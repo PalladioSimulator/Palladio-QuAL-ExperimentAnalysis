@@ -12,7 +12,7 @@
   <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="experimentanalysissvn" failOnError="false"/>
   <rm:locator searchPathRef="MDSDProfiles" failOnError="false"/>
   <rm:locator searchPathRef="pcm" failOnError="false"/>
-  <rm:locator pattern="^org\.eclipse\..*" searchPathRef="luna"/>
+  <rm:locator pattern="^org\.eclipse\..*" searchPathRef="luna" failOnError="false"/>
   <rm:locator searchPathRef="orbit" failOnError="false"/>
   <rm:searchPath name="edp2">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
