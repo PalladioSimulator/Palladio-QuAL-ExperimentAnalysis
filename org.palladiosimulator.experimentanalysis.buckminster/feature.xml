@@ -34,7 +34,7 @@
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.junit" version="4.11.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.experimentanalysis"/>
+      <import plugin="org.palladiosimulator.experimentanalysis" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.metricspec"/>
       <import plugin="org.jscience"/>
       <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
