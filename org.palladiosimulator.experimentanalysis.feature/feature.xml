@@ -117,7 +117,7 @@ This Agreement is governed by the laws of the State of New York and the intellec
       <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.edp2.datastream"/>
       <import plugin="org.palladiosimulator.recorderframework" version="2.0.1" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.simucomframework"/>
+      <import plugin="org.palladiosimulator.experimentanalysis"/>
    </requires>
 
    <plugin

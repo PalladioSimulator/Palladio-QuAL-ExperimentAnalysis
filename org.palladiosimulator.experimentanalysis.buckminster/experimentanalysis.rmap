@@ -11,7 +11,6 @@
   <rm:locator pattern="^org\.palladiosimulator\.edp2.*" searchPathRef="edp2" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="experimentanalysissvn" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.servicelevelobjective.*" searchPathRef="ServiceLevelObjectives" failOnError="false"/>
-  <rm:locator searchPathRef="MDSDProfiles" failOnError="false"/>
   <rm:locator searchPathRef="pcm" failOnError="false"/>
   <rm:locator pattern="^org\.eclipse\..*" searchPathRef="luna" failOnError="false"/>  
   <rm:locator searchPathRef="SimuLizar" failOnError="true" pattern="^org\.palladiosimulator\.simulizar.*" />
@@ -87,13 +86,6 @@
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/servicelevelobjectives/nightly/"/>
-    </rm:provider>
-  </rm:searchPath>
-  <rm:searchPath name="MDSDProfiles">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/mdsdprofiles/nightly/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="pcm">
