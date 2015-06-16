@@ -4,7 +4,7 @@
       label="Experiment Analysis Feature"
       version="1.0.0.qualifier"
       license-feature="org.palladiosimulator.license"
-      license-feature-version="1.0.0.qualifier">
+      license-feature-version="1.0.0">
 
    <description>
       PCM addon that contains additional general-purpose performance analysis features.
