@@ -9,12 +9,6 @@
    <description>
       PCM addon that contains additional general-purpose performance analysis features.
    </description>
-
-   <copyright>
-      This plugin is protected by copyright held by the members of
-the Palladio Research Group, University of Karlsruhe.
-   </copyright>
-
    
    <requires>
       <import plugin="org.eclipse.core.runtime"/>

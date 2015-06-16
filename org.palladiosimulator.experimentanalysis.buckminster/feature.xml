@@ -9,11 +9,6 @@
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
    </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
    
    <url>
       <discovery label="Palladio Commons" url="https://sdqweb.ipd.kit.edu/eclipse/commons/nightly/"/>
