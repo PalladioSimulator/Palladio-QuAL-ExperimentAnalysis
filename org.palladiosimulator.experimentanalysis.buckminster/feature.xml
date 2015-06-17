@@ -9,17 +9,6 @@
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
    </description>
-   
-   <url>
-      <discovery label="Palladio Commons" url="https://sdqweb.ipd.kit.edu/eclipse/commons/nightly/"/>
-      <discovery label="ProbeFramework" url="https://sdqweb.ipd.kit.edu/eclipse/probeframework/nightly/"/>
-      <discovery label="RecorderFramework" url="https://sdqweb.ipd.kit.edu/eclipse/recorderframework/nightly/"/>
-      <discovery label="Palladio Third Party Wrapper" url="https://sdqweb.ipd.kit.edu/eclipse/thirdpartywrapper/nightly/"/>
-      <discovery label="EDP2" url="https://sdqweb.ipd.kit.edu/eclipse/edp2/nightly/"/>
-      <discovery label="Palladio" url="https://sdqweb.ipd.kit.edu/eclipse/palladio/nightly/"/>
-      <discovery label="Eclipse Luna" url="http://download.eclipse.org/releases/luna"/>
-      <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
-   </url>
 
    <includes
          id="org.palladiosimulator.experimentanalysis.feature"
