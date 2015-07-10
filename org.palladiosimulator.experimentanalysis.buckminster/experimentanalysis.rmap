@@ -3,7 +3,7 @@
   <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="experimentanalysissvn" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.servicelevelobjective.*" searchPathRef="ServiceLevelObjectives" failOnError="false"/>
   <rm:locator searchPathRef="SimuLizar" failOnError="true" pattern="^org\.palladiosimulator\.simulizar.*" />
-  <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Build/trunk/org.palladiosimulator.targetPlatformBuild/pcm_base.rmap"/>
+  <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Analyzer/Framework/trunk/org.palladiosimulator.analyzer.buckminster/analyzer.rmap"/>
   <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Core/trunk/Editors/org.palladiosimulator.editors.buckminster/editors.rmap"/>
   
   <rm:searchPath name="SimuLizar">
