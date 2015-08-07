@@ -205,9 +205,6 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      * @throws IllegalArgumentException
      *             If the given measurement is {@code null} or does not adhere to the metric this
      *             window accepts.
-     * @throws IllegalStateException
-     *             If this window is not initialized, i.e.,
-     *             {@link SlidingWindow#initialize(SimuComModel)} has not been called beforehand.
      */
     public void addMeasurement(MeasuringValue newMeasurement) {
         checkAddMeasurementPrerequisites(newMeasurement);
@@ -239,9 +236,9 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      * This method adds the given measurement to the window data. <b>No prerequisite checks are
      * performed.</b><br>
      * As this method is intended to be used by subclasses when they override
-     * {@link SlidingWindow#addMeasurement(MeasuringValue)}, implementations should take care to call
-     * {@link SlidingWindow#checkAddMeasurementPrerequisites(MeasuringValue)} beforehand to ensure
-     * uncorrupt window data.
+     * {@link SlidingWindow#addMeasurement(MeasuringValue)}, implementations should take care to
+     * call {@link SlidingWindow#checkAddMeasurementPrerequisites(MeasuringValue)} beforehand to
+     * ensure uncorrupt window data.
      * 
      * @param newMeasurement
      *            The {@link Measurement} to be added.
@@ -364,7 +361,7 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
     /**
      * Indicates if there are currently measurements available.
      * 
-     * @return {@code true}, if yes, otherwise {@code false}
+     * @return {@code false}, if yes, otherwise {@code true}
      */
     public final boolean isEmpty() {
         return this.data.isEmpty();
