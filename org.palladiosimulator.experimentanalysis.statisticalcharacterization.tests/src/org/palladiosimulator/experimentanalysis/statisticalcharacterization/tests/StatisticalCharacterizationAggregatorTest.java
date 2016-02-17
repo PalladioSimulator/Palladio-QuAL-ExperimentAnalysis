@@ -28,7 +28,6 @@ public abstract class StatisticalCharacterizationAggregatorTest extends SlidingW
     private Measure<Double, Duration> milliSecondsResponseTime;
     private Measure<Double, Duration> minsResponseTime;
 
-    private MeasuringValue almostZeroResponseTimeMeasuringValue;
     protected MeasuringValue exepectedAggregatedResponseTimeMeasuringValueFirstTest;
     protected MeasuringValue exepectedAggregatedResponseTimeMeasuringValueSecondTest;
 
@@ -46,7 +45,6 @@ public abstract class StatisticalCharacterizationAggregatorTest extends SlidingW
         this.milliSecondsResponseTime = Measure.valueOf(2500d, SI.MILLI(SI.SECOND));
         this.minsResponseTime = Measure.valueOf(30d, NonSI.MINUTE);
 
-        this.almostZeroResponseTimeMeasuringValue = createResponseTimeTupleMeasurement(almostZeroResponseTime);
         this.exepectedAggregatedResponseTimeMeasuringValueFirstTest = createResponseTimeTupleMeasurement(
                 getExpectedAggregatedResponseTimeFirstTest());
         this.exepectedAggregatedResponseTimeMeasuringValueSecondTest = createResponseTimeTupleMeasurement(
