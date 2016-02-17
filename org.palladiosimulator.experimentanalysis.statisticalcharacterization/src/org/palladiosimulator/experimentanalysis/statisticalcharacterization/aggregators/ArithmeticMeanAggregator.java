@@ -5,10 +5,11 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
-import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.recorderframework.IRecorder;
 
 /**
@@ -21,22 +22,23 @@ import org.palladiosimulator.recorderframework.IRecorder;
  */
 public class ArithmeticMeanAggregator extends StatisticalCharacterizationAggregator {
 
-    public ArithmeticMeanAggregator(MetricSetDescription expectedWindowMetric) {
+    public ArithmeticMeanAggregator(NumericalBaseMetricDescription expectedWindowMetric) {
         super(expectedWindowMetric);
     }
 
-    public ArithmeticMeanAggregator(IRecorder recorderToWriteInto, MetricSetDescription expectedWindowMetric) {
+    public ArithmeticMeanAggregator(IRecorder recorderToWriteInto,
+            NumericalBaseMetricDescription expectedWindowMetric) {
         super(recorderToWriteInto, expectedWindowMetric);
 
     }
 
     public ArithmeticMeanAggregator(Collection<IRecorder> recordersToWriteInto,
-            MetricSetDescription expectedWindowMetric) {
+            NumericalBaseMetricDescription expectedWindowMetric) {
         super(recordersToWriteInto, expectedWindowMetric);
     }
 
     @Override
-    protected Measure<?, ?> calculateStatisticalCharaterization(Iterable<MeasuringValue> windowData) {
+    protected Measure<Double, Quantity> calculateStatisticalCharaterization(Iterable<MeasuringValue> windowData) {
         double arithmeticMean = StreamSupport.stream(windowData.spliterator(), false)
                 .map(measuringValue -> measuringValue.getMeasureForMetric(this.dataMetric))
                 .collect(Collectors.averagingDouble(measure -> measure.doubleValue(this.dataDefaultUnit)));

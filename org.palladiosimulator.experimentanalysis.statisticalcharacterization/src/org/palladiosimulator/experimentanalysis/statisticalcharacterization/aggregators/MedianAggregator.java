@@ -7,10 +7,11 @@ import java.util.List;
 import java.util.stream.StreamSupport;
 
 import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
-import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.recorderframework.IRecorder;
 
 /**
@@ -22,20 +23,21 @@ import org.palladiosimulator.recorderframework.IRecorder;
  */
 public class MedianAggregator extends StatisticalCharacterizationAggregator {
 
-    public MedianAggregator(MetricSetDescription expectedWindowMetric) {
+    public MedianAggregator(NumericalBaseMetricDescription expectedWindowMetric) {
         super(expectedWindowMetric);
     }
 
-    public MedianAggregator(IRecorder recorderToWriteInto, MetricSetDescription expectedWindowMetric) {
+    public MedianAggregator(IRecorder recorderToWriteInto, NumericalBaseMetricDescription expectedWindowMetric) {
         super(recorderToWriteInto, expectedWindowMetric);
     }
 
-    public MedianAggregator(Collection<IRecorder> recordersToWriteInto, MetricSetDescription expectedWindowMetric) {
+    public MedianAggregator(Collection<IRecorder> recordersToWriteInto,
+            NumericalBaseMetricDescription expectedWindowMetric) {
         super(recordersToWriteInto, expectedWindowMetric);
     }
 
     @Override
-    protected Measure<?, ?> calculateStatisticalCharaterization(Iterable<MeasuringValue> windowData) {
+    protected Measure<Double, Quantity> calculateStatisticalCharaterization(Iterable<MeasuringValue> windowData) {
         List<Double> data = StreamSupport.stream(windowData.spliterator(), false)
                 .map(measuringValue -> measuringValue.getMeasureForMetric(this.dataMetric))
                 .map(measure -> measure.doubleValue(this.dataDefaultUnit)).sorted().collect(toList());

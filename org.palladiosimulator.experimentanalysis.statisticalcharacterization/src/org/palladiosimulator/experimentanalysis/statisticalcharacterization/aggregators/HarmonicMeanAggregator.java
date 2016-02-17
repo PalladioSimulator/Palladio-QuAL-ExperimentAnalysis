@@ -6,10 +6,11 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
 
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
-import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.recorderframework.IRecorder;
 
 /**
@@ -24,21 +25,21 @@ import org.palladiosimulator.recorderframework.IRecorder;
  */
 public class HarmonicMeanAggregator extends StatisticalCharacterizationAggregator {
 
-    public HarmonicMeanAggregator(MetricSetDescription expectedWindowMetric) {
+    public HarmonicMeanAggregator(NumericalBaseMetricDescription expectedWindowMetric) {
         super(expectedWindowMetric);
     }
 
-    public HarmonicMeanAggregator(IRecorder recorderToWriteInto, MetricSetDescription expectedWindowMetric) {
+    public HarmonicMeanAggregator(IRecorder recorderToWriteInto, NumericalBaseMetricDescription expectedWindowMetric) {
         super(recorderToWriteInto, expectedWindowMetric);
     }
 
     public HarmonicMeanAggregator(Collection<IRecorder> recordersToWriteInto,
-            MetricSetDescription expectedWindowMetric) {
+            NumericalBaseMetricDescription expectedWindowMetric) {
         super(recordersToWriteInto, expectedWindowMetric);
     }
 
     @Override
-    protected Measure<?, ?> calculateStatisticalCharaterization(Iterable<MeasuringValue> windowData) {
+    protected Measure<Double, Quantity> calculateStatisticalCharaterization(Iterable<MeasuringValue> windowData) {
         // harmonic mean is not defined in case that any of the elements equals zero
         // this implementation will then return 0
         DoubleSummaryStatistics inverseValuesStatistics = StreamSupport.stream(windowData.spliterator(), false)
