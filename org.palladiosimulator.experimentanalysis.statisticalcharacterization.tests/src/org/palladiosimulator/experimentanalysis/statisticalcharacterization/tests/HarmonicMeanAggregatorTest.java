@@ -11,7 +11,7 @@ public class HarmonicMeanAggregatorTest extends StatisticalCharacterizationAggre
 
     @Override
     protected StatisticalCharacterizationAggregator getAggregatorUnderTest() {
-        return new HarmonicMeanAggregator(this.dummyRecorder, WINDOW_DATA_METRIC);
+        return new HarmonicMeanAggregator(this.dummyRecorder, RESULT_METRIC);
     }
 
     @Override

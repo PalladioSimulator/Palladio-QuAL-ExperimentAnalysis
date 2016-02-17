@@ -11,7 +11,7 @@ public class ArithmeticMeanAggregatorTest extends StatisticalCharacterizationAgg
 
     @Override
     protected StatisticalCharacterizationAggregator getAggregatorUnderTest() {
-        return new ArithmeticMeanAggregator(this.dummyRecorder, WINDOW_DATA_METRIC);
+        return new ArithmeticMeanAggregator(this.dummyRecorder, RESULT_METRIC);
     }
 
     @Override

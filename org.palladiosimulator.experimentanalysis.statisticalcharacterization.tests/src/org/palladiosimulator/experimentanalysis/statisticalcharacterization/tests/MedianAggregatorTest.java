@@ -11,7 +11,7 @@ public class MedianAggregatorTest extends StatisticalCharacterizationAggregatorT
 
     @Override
     protected StatisticalCharacterizationAggregator getAggregatorUnderTest() {
-        return new MedianAggregator(this.dummyRecorder, WINDOW_DATA_METRIC);
+        return new MedianAggregator(this.dummyRecorder, RESULT_METRIC);
     }
 
     @Override

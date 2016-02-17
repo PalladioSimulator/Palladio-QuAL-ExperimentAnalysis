@@ -11,7 +11,7 @@ public class GeometricMeanAggregatorTest extends StatisticalCharacterizationAggr
 
     @Override
     protected StatisticalCharacterizationAggregator getAggregatorUnderTest() {
-        return new GeometricMeanAggregator(this.dummyRecorder, WINDOW_DATA_METRIC);
+        return new GeometricMeanAggregator(this.dummyRecorder, RESULT_METRIC);
     }
 
     @Override

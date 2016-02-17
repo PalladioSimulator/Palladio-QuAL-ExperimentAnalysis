@@ -17,11 +17,13 @@ import org.palladiosimulator.experimentanalysis.windowaggregators.tests.SlidingW
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
 public abstract class StatisticalCharacterizationAggregatorTest extends SlidingWindowAggregatorTest {
 
-    protected static final MetricSetDescription WINDOW_DATA_METRIC = MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE;
+    private static final MetricSetDescription WINDOW_DATA_METRIC = MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE;
+    protected static final NumericalBaseMetricDescription RESULT_METRIC = (NumericalBaseMetricDescription) MetricDescriptionConstants.RESPONSE_TIME_METRIC;
 
     private Measure<Double, Duration> almostZeroResponseTime;
     private Measure<Double, Duration> secondsResponseTime;
@@ -122,18 +124,10 @@ public abstract class StatisticalCharacterizationAggregatorTest extends SlidingW
     }
 
     private static void assertMeasurementsEqual(MeasuringValue expected, MeasuringValue actual) {
-        Measure<Double, Dimensionless> expectedResponseTime = expected
-                .getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
-        Measure<Double, Dimensionless> actualResponseTime = actual
-                .getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
-        Measure<Double, Duration> expectedPointInTime = expected
-                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        Measure<Double, Duration> actualPointInTime = actual
-                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        Measure<Double, Dimensionless> expectedResponseTime = expected.getMeasureForMetric(RESULT_METRIC);
+        Measure<Double, Dimensionless> actualResponseTime = actual.getMeasureForMetric(RESULT_METRIC);
 
         assertEquals(expectedResponseTime.getValue(), actualResponseTime.getValue(), DELTA);
-        assertEquals(expectedPointInTime.getValue(), actualPointInTime.getValue(), DELTA);
-
     }
 
     @Test
@@ -158,7 +152,7 @@ public abstract class StatisticalCharacterizationAggregatorTest extends SlidingW
 
     @Test
     public final void testGetExpectedWindowDataMetric() {
-        assertEquals(WINDOW_DATA_METRIC, this.aggregatorUnderTest.getExpectedWindowDataMetric());
+        assertEquals(RESULT_METRIC, this.aggregatorUnderTest.getExpectedWindowDataMetric());
     }
 
 }
