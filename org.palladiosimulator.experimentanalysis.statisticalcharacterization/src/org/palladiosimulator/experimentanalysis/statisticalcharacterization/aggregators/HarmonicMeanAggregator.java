@@ -7,10 +7,21 @@ import java.util.stream.StreamSupport;
 
 import javax.measure.Measure;
 
+import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.recorderframework.IRecorder;
 
+/**
+ * {@link SlidingWindowAggregator} which computes the geometric mean from the measurements in the
+ * window once it moves on:<br>
+ * It is equal to the reciprocal of the arithmetic mean of the reciprocals of the measurements.<br>
+ * Note that it is not defined if any of the measurements is exactly 0. In such a case this
+ * implementation returns 0
+ * 
+ * @author Florian Rosenthal
+ *
+ */
 public class HarmonicMeanAggregator extends StatisticalCharacterizationAggregator {
 
     public HarmonicMeanAggregator(MetricSetDescription expectedWindowMetric) {

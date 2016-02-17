@@ -5,10 +5,19 @@ import java.util.stream.StreamSupport;
 
 import javax.measure.Measure;
 
+import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.recorderframework.IRecorder;
 
+/**
+ * {@link SlidingWindowAggregator} which computes the geometric mean from the measurements in the
+ * window once it moves on:<br>
+ * GM=(x<sub>1</sub> * x<sub>2</sub> * ... * x<sub>n</sub>) ^ 1/n
+ * 
+ * @author Florian Rosenthal
+ *
+ */
 public class GeometricMeanAggregator extends StatisticalCharacterizationAggregator {
 
     public GeometricMeanAggregator(MetricSetDescription expectedWindowMetric) {

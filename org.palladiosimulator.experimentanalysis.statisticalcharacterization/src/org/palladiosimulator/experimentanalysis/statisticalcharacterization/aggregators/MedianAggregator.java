@@ -8,10 +8,18 @@ import java.util.stream.StreamSupport;
 
 import javax.measure.Measure;
 
+import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.recorderframework.IRecorder;
 
+/**
+ * {@link SlidingWindowAggregator} which computes the median of the measurements in the window once
+ * it moves on.<br>
+ * 
+ * @author Florian Rosenthal
+ *
+ */
 public class MedianAggregator extends StatisticalCharacterizationAggregator {
 
     public MedianAggregator(MetricSetDescription expectedWindowMetric) {
@@ -33,7 +41,7 @@ public class MedianAggregator extends StatisticalCharacterizationAggregator {
                 .map(measure -> measure.doubleValue(this.dataDefaultUnit)).sorted().collect(toList());
         double median = 0d;
         if (!data.isEmpty()) {
-            int middle = (int) Math.floor(data.size() / 2);
+            int middle = data.size() / 2;
             if (data.size() % 2 == 0) {
                 median = 0.5 * (data.get(middle) + data.get(middle - 1));
             } else {
