@@ -5,7 +5,6 @@ import java.util.Deque;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
-import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
