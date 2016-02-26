@@ -35,7 +35,7 @@ public abstract class StatisticalCharacterizationAggregatorTest extends SlidingW
 
     // constant that denotes the maximum delta between double values for which both numbers are
     // still considered equal
-    private static final double DELTA = Math.pow(10, -3);
+    private static final double DELTA = Math.pow(10, -4);
 
     @Override
     @Before
