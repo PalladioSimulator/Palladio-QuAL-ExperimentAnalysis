@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
+import org.palladiosimulator.experimentanalysis.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.experimentanalysis.tests.utils.StoreLastMeasurementRecorder;

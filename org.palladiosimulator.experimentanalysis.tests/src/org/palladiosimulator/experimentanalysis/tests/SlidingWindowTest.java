@@ -16,8 +16,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
+import org.palladiosimulator.experimentanalysis.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
-import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.measurementframework.BasicMeasurement;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
@@ -40,7 +40,9 @@ public abstract class SlidingWindowTest {
     protected ISlidingWindowListener windowListener;
     protected ISlidingWindowListener windowListenerWrongMetric;
 
-    protected static final MetricSetDescription metricDescription = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
+    protected static final BaseMetricDescription windowMetricDescription = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC;
+    //the measurements are tuples, that is, window has to extract the state measurements from the tuple measurement
+    protected static final MetricSetDescription measurementsMetricDescription = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
     protected static final BaseMetricDescription wrongMetricDescription = MetricDescriptionConstants.POINT_IN_TIME_METRIC;
 
     @Before
@@ -51,12 +53,12 @@ public abstract class SlidingWindowTest {
         this.increment = Measure.valueOf(5d, SI.SECOND);
         this.pointInTimeMeasure = Measure.valueOf(1d, SI.SECOND);
         this.stateMeasure = Measure.valueOf(42L, Unit.ONE);
-        this.measurement = new TupleMeasurement(metricDescription, this.pointInTimeMeasure, this.stateMeasure);
+        this.measurement = new TupleMeasurement(measurementsMetricDescription, this.pointInTimeMeasure, this.stateMeasure);
 
         this.wrongMetricMeasurement = new BasicMeasurement<Double, Duration>(this.pointInTimeMeasure,
                 wrongMetricDescription);
         this.dummyStrategy = new DummyMoveOnStrategy();
-        this.windowListener = new DummySlidingWindowListener(metricDescription);
+        this.windowListener = new DummySlidingWindowListener(windowMetricDescription);
         this.windowListenerWrongMetric = new DummySlidingWindowListener(wrongMetricDescription);
     }
 
@@ -103,7 +105,7 @@ public abstract class SlidingWindowTest {
 
     @Test
     public void testGetAcceptedMetric() {
-        assertEquals(metricDescription, this.slidingWindowUnderTest.getAcceptedMetric());
+        assertEquals(windowMetricDescription, this.slidingWindowUnderTest.getAcceptedMetric());
     }
 
     @Test
@@ -158,7 +160,7 @@ public abstract class SlidingWindowTest {
     private final class SlidingWindowOnWindowFullEventMock extends SlidingWindow {
 
         public SlidingWindowOnWindowFullEventMock() {
-            super(windowLength, increment, metricDescription, dummyStrategy);
+            super(windowLength, increment, measurementsMetricDescription, dummyStrategy);
             // TODO Auto-generated constructor stub
         }
 
