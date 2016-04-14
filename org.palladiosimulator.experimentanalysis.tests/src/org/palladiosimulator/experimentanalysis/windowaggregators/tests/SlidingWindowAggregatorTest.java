@@ -1,5 +1,7 @@
 package org.palladiosimulator.experimentanalysis.windowaggregators.tests;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 
@@ -37,15 +39,32 @@ public abstract class SlidingWindowAggregatorTest {
         this.data.clear();
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = NullPointerException.class)
     public final void testSlidingWindowAggregatorCtorNullRecorder() {
-        new DummySlidingWindowAggregator(null);
+        IRecorder recorder = null;
+        new DummySlidingWindowAggregator(recorder);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public final void testSlidingWindowAggregatorCtorNullRecorderCollection() {
+        Collection<IRecorder> recorders = null;
+        new DummySlidingWindowAggregator(recorders);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public final void testSlidingWindowAggregatorCtorEmptyRecorderCollection() {
+        Collection<IRecorder> recorders = Collections.emptyList();
+        new DummySlidingWindowAggregator(recorders);
     }
 
     private static class DummySlidingWindowAggregator extends SlidingWindowAggregator {
 
         private DummySlidingWindowAggregator(IRecorder recorderToWriteInto) {
             super(recorderToWriteInto);
+        }
+
+        private DummySlidingWindowAggregator(Collection<IRecorder> recordersToWriteInto) {
+            super(recordersToWriteInto);
         }
 
         @Override

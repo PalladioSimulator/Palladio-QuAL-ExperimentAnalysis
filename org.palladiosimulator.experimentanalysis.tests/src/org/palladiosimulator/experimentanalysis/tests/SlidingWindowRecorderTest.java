@@ -41,7 +41,8 @@ public class SlidingWindowRecorderTest {
                 MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE,
                 new SlidingWindowTest.DummyMoveOnStrategy());
 
-        this.windowListener = new SlidingWindowUtilizationAggregator(new StoreLastMeasurementRecorder());
+        this.windowListener = new SlidingWindowUtilizationAggregator(
+                MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE, new StoreLastMeasurementRecorder());
         this.recorderUnderTest = new SlidingWindowRecorder(this.window, this.windowListener);
     }
 

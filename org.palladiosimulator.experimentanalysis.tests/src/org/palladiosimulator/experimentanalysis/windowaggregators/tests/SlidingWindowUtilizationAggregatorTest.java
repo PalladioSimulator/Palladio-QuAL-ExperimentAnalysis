@@ -2,6 +2,10 @@ package org.palladiosimulator.experimentanalysis.windowaggregators.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
@@ -15,6 +19,7 @@ import org.junit.Test;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
@@ -33,10 +38,11 @@ public class SlidingWindowUtilizationAggregatorTest extends SlidingWindowAggrega
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        this.aggregatorUnderTest = new SlidingWindowUtilizationAggregator(this.dummyRecorder);
+        this.expectedWindowDataMetric = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
+        this.aggregatorUnderTest = new SlidingWindowUtilizationAggregator(this.expectedWindowDataMetric,
+                this.dummyRecorder);
         this.emptyUtilizationMeasurement = createEmptyUtilizationTupleMeasurement();
         this.expectedNotEmptyUtilizationMeasurement = createUtilizationTupleMeasurement(0.7d);
-        this.expectedWindowDataMetric = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
         this.idleStateMeasure = Measure.valueOf(0L, Unit.ONE);
         this.busyStateMeasure = Measure.valueOf(42L, Unit.ONE);
     }
@@ -126,9 +132,27 @@ public class SlidingWindowUtilizationAggregatorTest extends SlidingWindowAggrega
         // [3-5]: 3s idleness
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void testSlidingWindowUtilizationAggregatorCtorWrongMetric() {
+        MetricDescription wrongMetric = MetricDescriptionConstants.COST_OVER_TIME;
+        new SlidingWindowUtilizationAggregator(wrongMetric, this.dummyRecorder);
+    }
+
     @Test
     public void testGetExpectedWindowDataMetric() {
         assertEquals(this.expectedWindowDataMetric, this.aggregatorUnderTest.getExpectedWindowDataMetric());
+    }
+
+    @Test
+    public void testGetAllowedWindowDataMetrics() {
+        // compare ids of metrics rather than metrics directly
+        List<String> allowedMetricIds = SlidingWindowUtilizationAggregator.getAllowedWindowDataMetrics().stream()
+                .map(MetricDescription::getId).collect(Collectors.toList());
+
+        assertEquals(2, allowedMetricIds.size());
+
+        assertTrue(allowedMetricIds.contains(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE.getId()));
+        assertTrue(allowedMetricIds.contains(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE.getId()));
     }
 
     @Test

@@ -49,9 +49,6 @@ public abstract class SlidingWindowAggregator implements ISlidingWindowListener 
      *             If the given {@link IRecorder} is {@code null}.
      */
     public SlidingWindowAggregator(IRecorder recorderToWriteInto) {
-        if (recorderToWriteInto == null) {
-            throw new IllegalArgumentException("Given recorder must not be null.");
-        }
         this.recordersToWriteInto.add(Objects.requireNonNull(recorderToWriteInto, "Given recorder must not be null."));
     }
 
@@ -64,7 +61,7 @@ public abstract class SlidingWindowAggregator implements ISlidingWindowListener 
      *            window data into. Typically, recorders that write data into persistence frameworks
      *            like EDP 2 are passed here.
      * @throws NullPointerException
-     *             If the given {@link IRecorder} is {@code null}.
+     *             If the given collection of {@link IRecorder}s is {@code null}.
      * @throws IllegalArgumentException
      *             If the given collection of recorders is empty.
      */
@@ -76,7 +73,7 @@ public abstract class SlidingWindowAggregator implements ISlidingWindowListener 
     }
 
     public void addRecorder(IRecorder recorder) {
-        this.recordersToWriteInto.add(recorder);
+        this.recordersToWriteInto.add(Objects.requireNonNull(recorder));
     }
 
     /**
@@ -96,9 +93,7 @@ public abstract class SlidingWindowAggregator implements ISlidingWindowListener 
             Measure<Double, Duration> windowLeftBound, Measure<Double, Duration> windowLength);
 
     private void writeToRecorder(MeasuringValue newMeasurement) {
-        for (IRecorder recorder : this.recordersToWriteInto) {
-            recorder.writeData(newMeasurement);
-        }
+        this.recordersToWriteInto.forEach(recorder -> recorder.writeData(newMeasurement));
     }
 
     @Override
