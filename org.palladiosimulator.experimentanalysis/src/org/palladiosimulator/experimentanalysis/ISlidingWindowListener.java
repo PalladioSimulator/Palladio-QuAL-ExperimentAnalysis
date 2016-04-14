@@ -3,6 +3,7 @@ package org.palladiosimulator.experimentanalysis;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
+import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 

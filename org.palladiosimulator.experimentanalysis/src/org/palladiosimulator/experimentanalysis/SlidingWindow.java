@@ -9,10 +9,17 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
+import org.eclipse.emf.ecore.EClass;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
+import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
+import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
+import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
+import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.metricspec.MetricSpecPackage;
+import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
 /**
@@ -34,12 +41,18 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
  */
 public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowListener> {
 
+    private static final NumericalBaseMetricDescription POINT_IN_TIME_METRIC = (NumericalBaseMetricDescription) MetricDescriptionConstants.POINT_IN_TIME_METRIC;
+    private static final EClass BASE_METRIC_DESC_ECLASS = MetricSpecPackage.Literals.BASE_METRIC_DESCRIPTION;
+
     private final Measure<Double, Duration> windowLength;
     private Measure<Double, Duration> currentLowerBound;
     private final Measure<Double, Duration> increment;
     private final MetricDescription acceptedMetrics;
     private final ISlidingWindowMoveOnStrategy moveOnStrategy;
     private final Deque<MeasuringValue> data = new LinkedList<>();
+
+    // store whether the accepted metric is a (numerical) base metric
+    private final boolean acceptsBaseMetric;
 
     /**
      * Initializes a new instance of the {@link SlidingWindow} class with the given parameters.
@@ -101,6 +114,8 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
         this.currentLowerBound = Measure.valueOf(0d, SI.SECOND);
         this.acceptedMetrics = acceptedMetrics;
         this.moveOnStrategy = moveOnStrategy;
+
+        this.acceptsBaseMetric = (BASE_METRIC_DESC_ECLASS.isInstance(this.acceptedMetrics));
     }
 
     /**
@@ -124,9 +139,8 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      *             <li>{@code acceptedMetrics} or {@code moveOnStrategy} is {@code null}</li>
      *             </ul>
      */
-    private static void checkCtorParameters(Measure<Double, Duration> windowLength,
-            Measure<Double, Duration> increment, MetricDescription acceptedMetrics,
-            ISlidingWindowMoveOnStrategy moveOnStrategy) {
+    private static void checkCtorParameters(Measure<Double, Duration> windowLength, Measure<Double, Duration> increment,
+            MetricDescription acceptedMetrics, ISlidingWindowMoveOnStrategy moveOnStrategy) {
 
         if (!isDurationMeasureValid(windowLength)) {
             throw new IllegalArgumentException("Given window length is invalid.");
@@ -135,9 +149,8 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
             throw new IllegalArgumentException("Given increment is invalid.");
         }
         if (acceptedMetrics == null) {
-            throw new IllegalArgumentException(
-                    "A sliding window only accepts measurements that adhere to a specific metric."
-                            + "Thus, a metric description must be given.");
+            throw new IllegalArgumentException("A sliding window only accepts measurements that adhere to a metric'.\n"
+                    + "Such a metric description was not given.");
         }
         if (moveOnStrategy == null) {
             throw new IllegalArgumentException(
@@ -194,7 +207,14 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      * @return {@code true} if the measurement is compatible, otherwise {@code false}.
      */
     private boolean measurementAdheresToMetric(MeasuringValue measurement) {
-        return measurement.isCompatibleWith(this.acceptedMetrics);
+        // consider special case that window accepts a base metric and
+        // measurement is a tuple which contains this base metric
+        // e.g., it is valid if a 'Response Time Tuple' is received and window
+        // expects 'Response Time' only
+        return measurement.isCompatibleWith(this.acceptedMetrics) || (this.acceptsBaseMetric
+                && MetricDescriptionUtility.isBaseMetricDescriptionSubsumedByMetricDescription(
+                        (BaseMetricDescription) this.acceptedMetrics, measurement.getMetricDesciption()));
+
     }
 
     /**
@@ -226,8 +246,8 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
             throw new IllegalArgumentException("Given measurement is null.");
         }
         if (!measurementAdheresToMetric(newMeasurement)) {
-            throw new IllegalArgumentException("Given measurement does not adhere to specified metric.\n"
-                    + "Expected metric: " + this.acceptedMetrics.getName() + "\nGiven metric: "
+            throw new IllegalArgumentException("Given measurement does not adhere to (or subsume) specified metric.\n"
+                    + "Expected metric: " + this.acceptedMetrics.getName() + "\nGiven measurement metric: "
                     + newMeasurement.getMetricDesciption().getName());
         }
     }
@@ -244,15 +264,16 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      *            The {@link Measurement} to be added.
      */
     protected final void addMeasurementInternal(MeasuringValue newMeasurement) {
-        Measure<?, Duration> pointInTime = newMeasurement
-                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        Measure<?, Duration> pointInTime = newMeasurement.getMeasureForMetric(POINT_IN_TIME_METRIC);
         if (getCurrentLowerBound().compareTo(pointInTime) > 0) {
             // this indicates a "gap": we only must keep the last measurement
             // prior to the new lower bound
             // hence, discard all previous ones
             this.flush();
         }
-        this.data.addLast(newMeasurement);
+        // only store the wanted part of the received measurement
+        // i.e., slice the measuring value
+        this.data.addLast(newMeasurement.getMeasuringValueForMetric(this.acceptedMetrics));
     }
 
     /**
@@ -270,6 +291,17 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      */
     public final MetricDescription getAcceptedMetric() {
         return this.acceptedMetrics;
+    }
+
+    /**
+     * Gets whether the metric accepted by this window is a {@link BaseMetricDescription}. The same
+     * result is obtained by calling {@link #getAcceptedMetric()} and then doing a type check.
+     * 
+     * @return {@code true} if the metric is a base metric, otherwise {@code false}.
+     * @see #getAcceptedMetric()
+     */
+    protected final boolean acceptsBaseMetric() {
+        return this.acceptsBaseMetric;
     }
 
     /**
@@ -406,32 +438,5 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      */
     public final List<ISlidingWindowListener> getAttachedObservers() {
         return Collections.unmodifiableList(super.getObservers());
-    }
-
-    /**
-     * Each window instance has an attached {@link ISlidingWindowMoveOnStrategy} that defines how
-     * the collected data (i.e., the measurements) is adjusted when the window moves forward. For
-     * instance, one strategy might be to discard all measurements that are now "outside" the
-     * window.
-     * 
-     * @author Florian Rosenthal
-     *
-     */
-    public interface ISlidingWindowMoveOnStrategy {
-        /**
-         * This method specifies how the collected data (i.e., the measurements) is adjusted when
-         * the window moves forward. It is called by the associated {@link SlidingWindow} instance
-         * each time it has moved forward.
-         * 
-         * @param currentData
-         *            A {@link Deque} containing the window data (i.e., the collected measurements)
-         *            at the moment it moved forward.
-         * @param newLowerBound
-         *            A point in time (in seconds) denoting the new lower bound of the window.
-         * @param increment
-         *            A {@link Measure} indicating by what the window moved forward.
-         */
-        public void adjustData(Deque<MeasuringValue> currentData, Measure<Double, Duration> newLowerBound,
-                Measure<Double, Duration> increment);
     }
 }
