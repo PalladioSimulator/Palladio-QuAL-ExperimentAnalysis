@@ -14,7 +14,7 @@ import org.palladiosimulator.edp2.datastream.IDataSource;
 import org.palladiosimulator.edp2.datastream.IDataStream;
 import org.palladiosimulator.edp2.datastream.configurable.PropertyConfigurable;
 import org.palladiosimulator.edp2.datastream.filter.AbstractFilter;
-import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
+import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -23,7 +23,8 @@ import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 
 /**
  * This class is a moving average implementation that calculates the utilization of an active
- * resource based on set of {@code (point in time, state of active resource)} tuple measurements.<br>
+ * resource based on set of {@code (point in time, state of active resource)} tuple measurements.
+ * <br>
  * That is, when being applied to an {@link IDataSource} that provides measurements adhering to this
  * metric, this filter outputs a set of subsequent {@code (point in time, utilization)} tuples. This
  * result set can be obtained by calling the {@link UtilizationFilter#getDataStream()} method.
@@ -101,13 +102,13 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
          */
         private UtilizationFilterOutputDataStream(final IDataStream<MeasuringValue> inputData) {
             final Measure<Double, Duration> windowLength = UtilizationFilter.this
-                    .<UtilizationFilterConfiguration>getConfiguration().getWindowLength();
+                    .<UtilizationFilterConfiguration> getConfiguration().getWindowLength();
 
             final Measure<Double, Duration> windowIncrement = UtilizationFilter.this
-                    .<UtilizationFilterConfiguration>getConfiguration().getWindowIncrement();
+                    .<UtilizationFilterConfiguration> getConfiguration().getWindowIncrement();
 
             this.slidingWindow = new UtilizationFilterSlidingWindow(windowLength, windowIncrement,
-                    new SlidingWindowUtilizationAggregator(this));
+                    new SlidingWindowUtilizationAggregator(FILTER_INPUT_METRIC, this));
             this.inputData = inputData;
             this.outputData = new ArrayList<MeasuringValue>();
             initializeOutputStream();

@@ -6,7 +6,7 @@ import javax.measure.quantity.Duration;
 import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
-import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
+import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
