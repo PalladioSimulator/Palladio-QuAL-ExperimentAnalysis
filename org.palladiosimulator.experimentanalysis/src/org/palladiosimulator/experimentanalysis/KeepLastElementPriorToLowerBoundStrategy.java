@@ -23,7 +23,7 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
  */
 public final class KeepLastElementPriorToLowerBoundStrategy implements ISlidingWindowMoveOnStrategy {
 
-    private static boolean isFirstElementPriorToCurrentLowerBound(Deque<MeasuringValue> currentData,
+    static boolean isFirstElementPriorToCurrentLowerBound(Deque<MeasuringValue> currentData,
             Measure<Double, Duration> newLowerBound) {
         assert !currentData.isEmpty();
 
