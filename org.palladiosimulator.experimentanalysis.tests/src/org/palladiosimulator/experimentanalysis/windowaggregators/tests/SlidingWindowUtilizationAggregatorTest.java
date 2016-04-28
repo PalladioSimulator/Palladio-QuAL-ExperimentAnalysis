@@ -1,11 +1,12 @@
 package org.palladiosimulator.experimentanalysis.windowaggregators.tests;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.mapping;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
@@ -147,7 +148,7 @@ public class SlidingWindowUtilizationAggregatorTest extends SlidingWindowAggrega
     public void testGetAllowedWindowDataMetrics() {
         // compare ids of metrics rather than metrics directly
         List<String> allowedMetricIds = SlidingWindowUtilizationAggregator.getAllowedWindowDataMetrics().stream()
-                .map(MetricDescription::getId).collect(Collectors.toList());
+                .collect(mapping(MetricDescription::getId, toList()));
 
         assertEquals(2, allowedMetricIds.size());
 
