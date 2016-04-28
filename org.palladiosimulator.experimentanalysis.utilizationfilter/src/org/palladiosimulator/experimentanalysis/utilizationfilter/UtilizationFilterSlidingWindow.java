@@ -8,7 +8,6 @@ import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBound
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
-import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
 /**
@@ -19,7 +18,8 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
  * {@code point in time} component is greater than the window's current upper bound) the window
  * moves forward by a fixed increment (until the new {@link Measurement} is within the window's
  * bounds) and the so far collected measurements are propagated to the connected
- * {@link SlidingWindowUtilizationAggregator} that is attached to the window upon initialization.<br>
+ * {@link SlidingWindowUtilizationAggregator} that is attached to the window upon initialization.
+ * <br>
  * 
  * @see SlidingWindowUtilizationAggregator
  * @see UtilizationFilter
@@ -28,8 +28,6 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
  * @author Florian Rosenthal
  */
 final class UtilizationFilterSlidingWindow extends SlidingWindow {
-
-    private static final MetricDescription ACCEPTED_WINDOW_DATA_METRIC = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
 
     /**
      * Initializes a new instance of the {@link UtilizationFilterSlidingWindow} class with the given
@@ -46,7 +44,8 @@ final class UtilizationFilterSlidingWindow extends SlidingWindow {
      *             given aggregator is {@code null.}
      * @see UtilizationFilterSlidingWindow#UtilizationFilterSlidingWindow(Measure, Measure)
      */
-    UtilizationFilterSlidingWindow(Measure<Double, Duration> windowLength, SlidingWindowUtilizationAggregator aggregator) {
+    UtilizationFilterSlidingWindow(Measure<Double, Duration> windowLength,
+            SlidingWindowUtilizationAggregator aggregator) {
         this(windowLength, windowLength, aggregator);
     }
 
@@ -69,12 +68,14 @@ final class UtilizationFilterSlidingWindow extends SlidingWindow {
      */
     UtilizationFilterSlidingWindow(Measure<Double, Duration> windowLength, Measure<Double, Duration> increment,
             SlidingWindowUtilizationAggregator aggregator) {
-        super(windowLength, increment, ACCEPTED_WINDOW_DATA_METRIC, new KeepLastElementPriorToLowerBoundStrategy());
+        super(windowLength, increment, aggregator.getExpectedWindowDataMetric(),
+                new KeepLastElementPriorToLowerBoundStrategy());
         this.addObserver(aggregator);
     }
 
     /**
-     * By calling this method, clients tell the window that no more measurements are to be added.<br>
+     * By calling this method, clients tell the window that no more measurements are to be added.
+     * <br>
      * It is reasonable to call this method after all data has been passed to the window in order to
      * ensure that all are processed correctly.
      */

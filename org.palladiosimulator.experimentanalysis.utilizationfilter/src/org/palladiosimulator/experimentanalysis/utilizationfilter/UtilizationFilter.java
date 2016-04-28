@@ -3,6 +3,7 @@ package org.palladiosimulator.experimentanalysis.utilizationfilter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
@@ -14,6 +15,7 @@ import org.palladiosimulator.edp2.datastream.IDataSource;
 import org.palladiosimulator.edp2.datastream.IDataStream;
 import org.palladiosimulator.edp2.datastream.configurable.PropertyConfigurable;
 import org.palladiosimulator.edp2.datastream.filter.AbstractFilter;
+import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -23,8 +25,10 @@ import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 
 /**
  * This class is a moving average implementation that calculates the utilization of an active
- * resource based on set of {@code (point in time, state of active resource)} tuple measurements.
- * <br>
+ * resource based on a set of {@code (point in time, state of active resource)} tuple measurements,
+ * or,<br>
+ * in case of a multi-core resource, based on a set of
+ * {@code (point in time, 'overall' utilization of active resource)} tuple measurements.<br>
  * That is, when being applied to an {@link IDataSource} that provides measurements adhering to this
  * metric, this filter outputs a set of subsequent {@code (point in time, utilization)} tuples. This
  * result set can be obtained by calling the {@link UtilizationFilter#getDataStream()} method.
@@ -39,6 +43,7 @@ import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
  */
 public final class UtilizationFilter extends AbstractFilter implements IPersistable, IPersistableElement {
 
+    // the result metric is also a valid input metric
     private static final MetricDescription FILTER_RESULT_METRIC = MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
     private static final MetricDescription FILTER_INPUT_METRIC = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
 
@@ -61,22 +66,31 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
         super(datasource, FILTER_INPUT_METRIC);
     }
 
+    @Override
+    public boolean canAccept(final IDataSource dataSource) {
+        MetricDescription metric = Objects.requireNonNull(dataSource).getMetricDesciption();
+        return metric == FILTER_INPUT_METRIC || metric == FILTER_RESULT_METRIC
+                || MetricDescriptionUtility.metricDescriptionIdsEqual(FILTER_INPUT_METRIC, metric)
+                || MetricDescriptionUtility.metricDescriptionIdsEqual(FILTER_RESULT_METRIC, metric);
+    }
+
     /**
      * Obtains this filter's output data (i.e., a set of subsequent
      * {@code (point in time, utilization)} tuples) based on the current input data.
      *
      * @return An {@link IDataStream} containing the resulting utilization measurements.
-     * @throws IllegalStateException
+     * @throws NullPointerException
      *             if no input data source has been set beforehand.
      */
     @SuppressWarnings("unchecked")
     @Override
     public IDataStream<MeasuringValue> getDataStream() {
-        if (this.getDataSource() != null) {
-            final IDataStream<MeasuringValue> inputData = this.getDataSource().getDataStream();
-            return new UtilizationFilterOutputDataStream(inputData);
+        if (canAccept(Objects.requireNonNull(getDataSource(),
+                "No input data available. UtilizationFilter cannot be applied."))) {
+            final IDataStream<MeasuringValue> inputData = getDataSource().getDataStream();
+            return new UtilizationFilterOutputDataStream(inputData, inputData.getMetricDesciption());
         }
-        throw new IllegalStateException("No input data available. UtilizationFilter cannot be applied.");
+        throw new AssertionError("Can accept was not called beforehand!");
     }
 
     /**
@@ -100,7 +114,8 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
          *            A {@link IDataStream} containing {@code state of active resource tuple}
          *            measurements.
          */
-        private UtilizationFilterOutputDataStream(final IDataStream<MeasuringValue> inputData) {
+        private UtilizationFilterOutputDataStream(final IDataStream<MeasuringValue> inputData,
+                MetricDescription inputMetric) {
             final Measure<Double, Duration> windowLength = UtilizationFilter.this
                     .<UtilizationFilterConfiguration> getConfiguration().getWindowLength();
 
@@ -108,7 +123,7 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
                     .<UtilizationFilterConfiguration> getConfiguration().getWindowIncrement();
 
             this.slidingWindow = new UtilizationFilterSlidingWindow(windowLength, windowIncrement,
-                    new SlidingWindowUtilizationAggregator(FILTER_INPUT_METRIC, this));
+                    new SlidingWindowUtilizationAggregator(inputMetric, this));
             this.inputData = inputData;
             this.outputData = new ArrayList<MeasuringValue>();
             initializeOutputStream();
@@ -121,9 +136,7 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
          */
         private void initializeOutputStream() {
             // write all the data into the window
-            for (final MeasuringValue measurement : inputData) {
-                this.slidingWindow.addMeasurement(measurement);
-            }
+            this.inputData.forEach(this.slidingWindow::addMeasurement);
             // handle the case that the last measurement is prior to window length, deal with last
             // measurements (that were taken later than last window move on)
             this.slidingWindow.noMoreDataAvailable();
