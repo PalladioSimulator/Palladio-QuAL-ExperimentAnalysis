@@ -104,14 +104,44 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
     public SlidingWindow(Measure<Double, Duration> windowLength, Measure<Double, Duration> increment,
             MetricDescription acceptedMetrics, ISlidingWindowMoveOnStrategy moveOnStrategy) {
 
-        checkCtorParameters(windowLength, increment, acceptedMetrics, moveOnStrategy);
+    	this(windowLength, increment, Measure.valueOf(0d, SI.SECOND), acceptedMetrics, moveOnStrategy);
+    }
+    
+    /**
+     * Initializes a new instance of the {@link SlidingWindow} class with the given parameters.
+     * 
+     * @param windowLength
+     *            The length of the window, given in any arbitrary {@link Duration}.
+     * @param increment
+     *            This {@link Measure} indicates the increment by what the window is moved on, given
+     *            in any arbitrary {@link Duration}.
+     * @param initialLowerBound
+     *            This {@link Measure} indicates the lower bound value at which the algorithm starts aggregating, 
+     *            given in any arbitrary {@link Duration}.
+     * @param acceptedMetrics
+     *            As each window only accepts measurements that adhere to a certain metric, a
+     *            {@link MetricDescription} of must be specified.
+     * @param moveOnStrategy
+     *            The {@link ISlidingWindowMoveOnStrategy} instance that defines how the collected
+     *            data (i.e., the measurements) is adjusted when the window moves forward.
+     * @throws IllegalArgumentException
+     *             In one of the following cases:
+     *             <ul>
+     *             <li>given window length or increment is negative</li>
+     *             <li>{@code acceptedMetrics} or {@code moveOnStrategy} is {@code null}</li>
+     *             </ul>
+     */
+    public SlidingWindow(Measure<Double, Duration> windowLength, Measure<Double, Duration> increment,
+    		Measure<Double, Duration> initialLowerBound, MetricDescription acceptedMetrics, ISlidingWindowMoveOnStrategy moveOnStrategy) {
+
+        checkCtorParameters(windowLength, increment, initialLowerBound, acceptedMetrics, moveOnStrategy);
 
         // ensure that we have Doubles and not Integers, Longs, etc.
         // otherwise measure.getValue() doesn't yield a Double but a
         // ClassCastException
         this.windowLength = Measure.valueOf(windowLength.doubleValue(windowLength.getUnit()), windowLength.getUnit());
         this.increment = Measure.valueOf(increment.doubleValue(increment.getUnit()), increment.getUnit());
-        this.currentLowerBound = Measure.valueOf(0d, SI.SECOND);
+        this.currentLowerBound = initialLowerBound;
         this.acceptedMetrics = acceptedMetrics;
         this.moveOnStrategy = moveOnStrategy;
 
@@ -140,13 +170,16 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      *             </ul>
      */
     private static void checkCtorParameters(Measure<Double, Duration> windowLength, Measure<Double, Duration> increment,
-            MetricDescription acceptedMetrics, ISlidingWindowMoveOnStrategy moveOnStrategy) {
+    		Measure<Double, Duration> initialLowerBound, MetricDescription acceptedMetrics, ISlidingWindowMoveOnStrategy moveOnStrategy) {
 
-        if (!isDurationMeasureValid(windowLength)) {
+        if (!isDurationMeasureValid(windowLength, false)) {
             throw new IllegalArgumentException("Given window length is invalid.");
         }
-        if (!isDurationMeasureValid(increment)) {
+        if (!isDurationMeasureValid(increment, false)) {
             throw new IllegalArgumentException("Given increment is invalid.");
+        }
+        if (!isDurationMeasureValid(initialLowerBound, true)) {
+            throw new IllegalArgumentException("Given inital lower bound is invalid.");
         }
         if (acceptedMetrics == null) {
             throw new IllegalArgumentException("A sliding window only accepts measurements that adhere to a metric'.\n"
@@ -167,13 +200,14 @@ public abstract class SlidingWindow extends AbstractObservable<ISlidingWindowLis
      * @return {@code true} if the point in time value denoted by the given measure is
      *         {@code != null, != infinite, != NaN} and {@code >= 0}, {@code false} otherwise.
      */
-    private static boolean isDurationMeasureValid(Measure<Double, Duration> measure) {
+    private static boolean isDurationMeasureValid(Measure<Double, Duration> measure, boolean greaterEqualsZero) {
         boolean result = false;
         if (measure != null) {
             // ensure that we have a double, as value may actually be a Long,
             // Integer, ...
             Double value = measure.doubleValue(measure.getUnit());
-            result = (value != null && !value.isInfinite() && !value.isNaN() && value.doubleValue() > 0d);
+            result = (value != null && !value.isInfinite() && !value.isNaN() 
+            		&& (greaterEqualsZero ? (value.doubleValue() >= 0d) : (value.doubleValue() > 0d)));
         }
         return result;
     }
