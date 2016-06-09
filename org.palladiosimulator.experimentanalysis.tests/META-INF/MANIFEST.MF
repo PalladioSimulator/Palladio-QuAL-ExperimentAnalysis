@@ -7,7 +7,7 @@ Bundle-Activator: org.palladiosimulator.experimentanalysis.tests.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.11.0",
  org.palladiosimulator.experimentanalysis,
- org.palladiosimulator.metricspec,
+ org.palladiosimulator.metricspec;bundle-version="1.0.2",
  org.jscience,
  org.palladiosimulator.commons;bundle-version="1.0.0",
  org.palladiosimulator.recorderframework;bundle-version="2.0.1",
