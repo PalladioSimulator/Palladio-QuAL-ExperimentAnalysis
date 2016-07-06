@@ -41,8 +41,6 @@ public abstract class SlidingWindowTest {
     protected ISlidingWindowListener windowListenerWrongMetric;
 
     protected static final BaseMetricDescription windowMetricDescription = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC;
-    // the measurements are tuples, that is, window has to extract the state measurements from the
-    // tuple measurement
     protected static final MetricSetDescription measurementsMetricDescription = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
     protected static final BaseMetricDescription wrongMetricDescription = MetricDescriptionConstants.POINT_IN_TIME_METRIC;
 
