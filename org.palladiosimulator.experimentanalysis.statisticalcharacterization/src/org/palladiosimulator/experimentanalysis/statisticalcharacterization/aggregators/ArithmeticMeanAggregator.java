@@ -1,12 +1,16 @@
 package org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
+import javax.measure.unit.SI;
 
+import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
@@ -38,12 +42,43 @@ public class ArithmeticMeanAggregator extends StatisticalCharacterizationAggrega
     }
 
     @Override
-    protected Measure<Double, Quantity> calculateStatisticalCharaterization(Iterable<MeasuringValue> windowData) {
+    protected Measure<Double, Quantity> calculateStatisticalCharaterizationDiscrete(
+            Iterable<MeasuringValue> windowData) {
         double arithmeticMean = StreamSupport.stream(windowData.spliterator(), false)
-                .map(measuringValue -> measuringValue.getMeasureForMetric(this.dataMetric))
-                .collect(Collectors.averagingDouble(measure -> measure.doubleValue(this.dataDefaultUnit)));
+                .collect(Collectors.averagingDouble(this::obtainDataValueFromMeasurement));
 
         return Measure.valueOf(arithmeticMean, this.dataDefaultUnit);
     }
 
+    @Override
+    protected Measure<Double, Quantity> calculateStatisticalCharacterizationContinuous(
+            Iterable<MeasuringValue> windowData) {
+
+        Amount<? extends Quantity> area = Amount.valueOf(0d, this.dataDefaultUnit.times(SI.SECOND));
+        Iterator<MeasuringValue> iterator = windowData.iterator();
+
+        if (iterator.hasNext()) {
+            MeasuringValue currentMeasurement = iterator.next();
+
+            Optional<MeasuringValue> nextMeasurement = null; // empty optional indicates
+                                                             // no further elements
+            do {
+                if (iterator.hasNext()) {
+                    nextMeasurement = Optional.of(iterator.next());
+                } else {
+                    nextMeasurement = Optional.empty();
+                }
+                // mac operation
+                area = area.plus(obtainCurrentMeasurementValidityScope(currentMeasurement, nextMeasurement)
+                        .times(obtainDataFromMeasurement(currentMeasurement)));
+
+                if (nextMeasurement.isPresent()) {
+                    currentMeasurement = nextMeasurement.get();
+                }
+            } while (!nextMeasurement.isPresent());
+        }
+        @SuppressWarnings("unchecked")
+        Amount<Quantity> arithmeticMean = (Amount<Quantity>) area.divide(this.windowLength);
+        return Measure.valueOf(arithmeticMean.doubleValue(this.dataDefaultUnit), this.dataDefaultUnit);
+    }
 }

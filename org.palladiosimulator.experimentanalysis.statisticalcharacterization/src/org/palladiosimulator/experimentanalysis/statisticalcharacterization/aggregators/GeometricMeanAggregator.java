@@ -1,10 +1,13 @@
 package org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators;
 
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
+import javax.measure.unit.SI;
 
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
@@ -35,14 +38,46 @@ public class GeometricMeanAggregator extends StatisticalCharacterizationAggregat
     }
 
     @Override
-    protected Measure<Double, Quantity> calculateStatisticalCharaterization(Iterable<MeasuringValue> windowData) {
+    protected Measure<Double, Quantity> calculateStatisticalCharaterizationDiscrete(
+            Iterable<MeasuringValue> windowData) {
         long numberOfElements = StreamSupport.stream(windowData.spliterator(), true).count();
         double geometricMean = StreamSupport.stream(windowData.spliterator(), false)
-                .map(measuringValue -> measuringValue.getMeasureForMetric(this.dataMetric))
-                .map(measure -> measure.doubleValue(this.dataDefaultUnit)).reduce((left, right) -> left * right)
+                .map(this::obtainDataValueFromMeasurement).reduce((left, right) -> left * right)
                 .map(prod -> Math.pow(prod, 1d / numberOfElements)).orElse(0d);
 
         return Measure.valueOf(geometricMean, this.dataDefaultUnit);
+    }
+
+    @Override
+    protected Measure<Double, Quantity> calculateStatisticalCharacterizationContinuous(
+            Iterable<MeasuringValue> windowData) {
+
+        double geometricMean = 0d;
+        Iterator<MeasuringValue> iterator = windowData.iterator();
+
+        if (iterator.hasNext()) {
+            MeasuringValue currentMeasurement = iterator.next();
+
+            Optional<MeasuringValue> nextMeasurement = null; // empty optional indicates
+                                                             // no further elements
+            do {
+                if (iterator.hasNext()) {
+                    nextMeasurement = Optional.of(iterator.next());
+                } else {
+                    nextMeasurement = Optional.empty();
+                }
+                // mac operation
+                geometricMean += Math.log(obtainDataValueFromMeasurement(currentMeasurement))
+                        * obtainCurrentMeasurementValidityScope(currentMeasurement, nextMeasurement)
+                                .doubleValue(SI.SECOND);
+
+                if (nextMeasurement.isPresent()) {
+                    currentMeasurement = nextMeasurement.get();
+                }
+            } while (!nextMeasurement.isPresent());
+        }
+        return Measure.valueOf(Math.exp(geometricMean / this.windowLength.doubleValue(SI.SECOND)),
+                this.dataDefaultUnit);
     }
 
 }
