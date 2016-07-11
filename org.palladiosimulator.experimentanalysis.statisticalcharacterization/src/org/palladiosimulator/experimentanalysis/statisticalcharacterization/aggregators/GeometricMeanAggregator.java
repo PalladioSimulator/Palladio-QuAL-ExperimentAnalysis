@@ -56,7 +56,7 @@ public class GeometricMeanAggregator extends StatisticalCharacterizationAggregat
         Iterator<MeasuringValue> iterator = windowData.iterator();
 
         if (iterator.hasNext()) {
-            double meanOfLogs = 0d;
+            double sumOfLogs = 0d;
             MeasuringValue currentMeasurement = iterator.next();
 
             Optional<MeasuringValue> nextMeasurement = null; // empty optional indicates
@@ -68,7 +68,7 @@ public class GeometricMeanAggregator extends StatisticalCharacterizationAggregat
                     nextMeasurement = Optional.empty();
                 }
                 // mac operation
-                meanOfLogs += Math.log(obtainDataValueFromMeasurement(currentMeasurement))
+                sumOfLogs += Math.log(obtainDataValueFromMeasurement(currentMeasurement))
                         * obtainCurrentMeasurementValidityScope(currentMeasurement, nextMeasurement)
                                 .doubleValue(SI.SECOND);
 
@@ -77,7 +77,7 @@ public class GeometricMeanAggregator extends StatisticalCharacterizationAggregat
                 }
             } while (nextMeasurement.isPresent());
 
-            geometricMean = Measure.valueOf(Math.exp(meanOfLogs / this.windowLength.doubleValue(SI.SECOND)),
+            geometricMean = Measure.valueOf(Math.exp(sumOfLogs / this.windowLength.doubleValue(SI.SECOND)),
                     this.dataDefaultUnit);
         }
         return geometricMean;
