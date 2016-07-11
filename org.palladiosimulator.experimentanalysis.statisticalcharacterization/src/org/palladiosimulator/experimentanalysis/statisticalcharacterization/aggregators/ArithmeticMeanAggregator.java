@@ -75,7 +75,7 @@ public class ArithmeticMeanAggregator extends StatisticalCharacterizationAggrega
                 if (nextMeasurement.isPresent()) {
                     currentMeasurement = nextMeasurement.get();
                 }
-            } while (!nextMeasurement.isPresent());
+            } while (nextMeasurement.isPresent());
         }
         @SuppressWarnings("unchecked")
         Amount<Quantity> arithmeticMean = (Amount<Quantity>) area.divide(this.windowLength);

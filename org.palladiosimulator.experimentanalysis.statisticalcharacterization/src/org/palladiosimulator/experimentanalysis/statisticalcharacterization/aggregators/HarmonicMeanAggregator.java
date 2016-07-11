@@ -7,8 +7,8 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import javax.measure.Measure;
+import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
-import javax.measure.unit.SI;
 
 import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
@@ -58,10 +58,11 @@ public class HarmonicMeanAggregator extends StatisticalCharacterizationAggregato
     protected Measure<Double, Quantity> calculateStatisticalCharacterizationContinuous(
             Iterable<MeasuringValue> windowData) {
 
-        Amount<? extends Quantity> area = Amount.valueOf(0d, this.dataDefaultUnit.times(SI.SECOND));
+        Measure<Double, Quantity> harmonicMean = Measure.valueOf(0d, this.dataDefaultUnit);
         Iterator<MeasuringValue> iterator = windowData.iterator();
 
         if (iterator.hasNext()) {
+            Amount<? extends Quantity> area = Amount.valueOf(0d, Duration.UNIT.divide(this.dataDefaultUnit));
             MeasuringValue currentMeasurement = iterator.next();
 
             Optional<MeasuringValue> nextMeasurement = null; // empty optional indicates
@@ -79,11 +80,12 @@ public class HarmonicMeanAggregator extends StatisticalCharacterizationAggregato
                 if (nextMeasurement.isPresent()) {
                     currentMeasurement = nextMeasurement.get();
                 }
-            } while (!nextMeasurement.isPresent());
-        }
-        @SuppressWarnings("unchecked")
-        Amount<Quantity> harmonicMean = (Amount<Quantity>) this.windowLength.divide(area);
+            } while (nextMeasurement.isPresent());
+            @SuppressWarnings("unchecked")
+            Amount<Quantity> harmonicMeanAmount = (Amount<Quantity>) this.windowLength.divide(area);
 
-        return Measure.valueOf(harmonicMean.doubleValue(dataDefaultUnit), this.dataDefaultUnit);
+            harmonicMean = Measure.valueOf(harmonicMeanAmount.doubleValue(this.dataDefaultUnit), this.dataDefaultUnit);
+        }
+        return harmonicMean;
     }
 }

@@ -85,7 +85,7 @@ public class MedianAggregator extends StatisticalCharacterizationAggregator {
                 if (nextMeasurement.isPresent()) {
                     currentMeasurement = nextMeasurement.get();
                 }
-            } while (!nextMeasurement.isPresent());
+            } while (nextMeasurement.isPresent());
             Interval[] sortedIntervals = intervalsInWindow.stream().sorted().toArray(Interval[]::new);
             @SuppressWarnings("unchecked")
             Amount<Quantity>[] sortedAreas = (Amount<Quantity>[]) Arrays.stream(sortedIntervals).map(Interval::getArea)
@@ -119,6 +119,7 @@ public class MedianAggregator extends StatisticalCharacterizationAggregator {
 
         @Override
         public int compareTo(Interval o) {
+            // only use value for comparison
             return this.value.compareTo(o.value);
         }
 
