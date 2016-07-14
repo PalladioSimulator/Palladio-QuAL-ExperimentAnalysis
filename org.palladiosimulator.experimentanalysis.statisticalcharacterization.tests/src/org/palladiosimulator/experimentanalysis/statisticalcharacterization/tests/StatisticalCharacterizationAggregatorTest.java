@@ -12,7 +12,7 @@ import javax.measure.unit.SI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.StatisticalCharacterizationAggregator;
+import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.slidingwindow.SlidingWindowStatisticalCharacterizationAggregator;
 import org.palladiosimulator.experimentanalysis.windowaggregators.tests.SlidingWindowAggregatorTest;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
@@ -53,7 +53,7 @@ public abstract class StatisticalCharacterizationAggregatorTest extends SlidingW
                 getExpectedAggregatedResponseTimeSecondTest());
     }
 
-    protected abstract StatisticalCharacterizationAggregator getAggregatorUnderTest();
+    protected abstract SlidingWindowStatisticalCharacterizationAggregator getAggregatorUnderTest();
 
     /**
      * Response times to aggregate: 0.1s, 5.5s, 2500ms, 30min

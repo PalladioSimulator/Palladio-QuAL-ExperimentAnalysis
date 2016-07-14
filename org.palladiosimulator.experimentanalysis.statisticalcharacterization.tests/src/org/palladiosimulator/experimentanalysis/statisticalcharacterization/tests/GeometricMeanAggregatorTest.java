@@ -6,12 +6,14 @@ import javax.measure.unit.SI;
 
 import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.GeometricMeanAggregator;
 import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.StatisticalCharacterizationAggregator;
+import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.slidingwindow.SlidingWindowStatisticalCharacterizationAggregator;
 
 public class GeometricMeanAggregatorTest extends StatisticalCharacterizationAggregatorTest {
 
     @Override
-    protected StatisticalCharacterizationAggregator getAggregatorUnderTest() {
-        return new GeometricMeanAggregator(this.dummyRecorder, RESULT_METRIC);
+    protected SlidingWindowStatisticalCharacterizationAggregator getAggregatorUnderTest() {
+        StatisticalCharacterizationAggregator aggregator = new GeometricMeanAggregator(RESULT_METRIC);
+        return new SlidingWindowStatisticalCharacterizationAggregator(this.dummyRecorder, aggregator);
     }
 
     @Override
