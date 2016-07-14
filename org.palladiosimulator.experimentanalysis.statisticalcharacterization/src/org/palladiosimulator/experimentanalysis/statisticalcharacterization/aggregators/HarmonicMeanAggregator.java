@@ -1,6 +1,5 @@
 package org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -14,11 +13,10 @@ import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
-import org.palladiosimulator.recorderframework.IRecorder;
 
 /**
- * {@link SlidingWindowAggregator} which computes the geometric mean from the measurements in the
- * window once it moves on:<br>
+ * {@link SlidingWindowAggregator} which computes the geometric mean of a sequence of measurements:
+ * <br>
  * It is equal to the reciprocal of the arithmetic mean of the reciprocals of the measurements.<br>
  * Note that it is not defined if any of the measurements is exactly 0. In such a case this
  * implementation returns 0
@@ -32,15 +30,6 @@ public class HarmonicMeanAggregator extends StatisticalCharacterizationAggregato
         super(expectedWindowMetric);
     }
 
-    public HarmonicMeanAggregator(IRecorder recorderToWriteInto, NumericalBaseMetricDescription expectedWindowMetric) {
-        super(recorderToWriteInto, expectedWindowMetric);
-    }
-
-    public HarmonicMeanAggregator(Collection<IRecorder> recordersToWriteInto,
-            NumericalBaseMetricDescription expectedWindowMetric) {
-        super(recordersToWriteInto, expectedWindowMetric);
-    }
-
     @Override
     protected Measure<Double, Quantity> calculateStatisticalCharaterizationDiscrete(
             Iterable<MeasuringValue> windowData) {
@@ -50,7 +39,7 @@ public class HarmonicMeanAggregator extends StatisticalCharacterizationAggregato
                 Collectors.averagingDouble(measurement -> 1d / this.obtainDataValueFromMeasurement(measurement)));
 
         return Measure.valueOf(arithmeticMeanOfInverses == Double.NaN || arithmeticMeanOfInverses == 0 ? 0
-                : 1 / arithmeticMeanOfInverses, this.dataDefaultUnit);
+                : 1 / arithmeticMeanOfInverses, super.getDataDefaultUnit());
 
     }
 
@@ -58,11 +47,11 @@ public class HarmonicMeanAggregator extends StatisticalCharacterizationAggregato
     protected Measure<Double, Quantity> calculateStatisticalCharacterizationContinuous(
             Iterable<MeasuringValue> windowData) {
 
-        Measure<Double, Quantity> harmonicMean = Measure.valueOf(0d, this.dataDefaultUnit);
+        Measure<Double, Quantity> harmonicMean = Measure.valueOf(0d, super.getDataDefaultUnit());
         Iterator<MeasuringValue> iterator = windowData.iterator();
 
         if (iterator.hasNext()) {
-            Amount<? extends Quantity> area = Amount.valueOf(0d, Duration.UNIT.divide(this.dataDefaultUnit));
+            Amount<? extends Quantity> area = Amount.valueOf(0d, Duration.UNIT.divide(super.getDataDefaultUnit()));
             MeasuringValue currentMeasurement = iterator.next();
 
             Optional<MeasuringValue> nextMeasurement = null; // empty optional indicates
@@ -82,9 +71,10 @@ public class HarmonicMeanAggregator extends StatisticalCharacterizationAggregato
                 }
             } while (nextMeasurement.isPresent());
             @SuppressWarnings("unchecked")
-            Amount<Quantity> harmonicMeanAmount = (Amount<Quantity>) this.windowLength.divide(area);
+            Amount<Quantity> harmonicMeanAmount = (Amount<Quantity>) super.getIntervalLength().divide(area);
 
-            harmonicMean = Measure.valueOf(harmonicMeanAmount.doubleValue(this.dataDefaultUnit), this.dataDefaultUnit);
+            harmonicMean = Measure.valueOf(harmonicMeanAmount.doubleValue(super.getDataDefaultUnit()),
+                    super.getDataDefaultUnit());
         }
         return harmonicMean;
     }

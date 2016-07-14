@@ -4,7 +4,6 @@ import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
@@ -19,11 +18,9 @@ import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
-import org.palladiosimulator.recorderframework.IRecorder;
 
 /**
- * {@link SlidingWindowAggregator} which computes the median of the measurements in the window once
- * it moves on.<br>
+ * {@link SlidingWindowAggregator} which computes the median of the measurements.<br>
  * 
  * @author Florian Rosenthal
  *
@@ -32,15 +29,6 @@ public class MedianAggregator extends StatisticalCharacterizationAggregator {
 
     public MedianAggregator(NumericalBaseMetricDescription expectedWindowMetric) {
         super(expectedWindowMetric);
-    }
-
-    public MedianAggregator(IRecorder recorderToWriteInto, NumericalBaseMetricDescription expectedWindowMetric) {
-        super(recorderToWriteInto, expectedWindowMetric);
-    }
-
-    public MedianAggregator(Collection<IRecorder> recordersToWriteInto,
-            NumericalBaseMetricDescription expectedWindowMetric) {
-        super(recordersToWriteInto, expectedWindowMetric);
     }
 
     @Override
@@ -57,14 +45,14 @@ public class MedianAggregator extends StatisticalCharacterizationAggregator {
                 median = data.get(middle);
             }
         }
-        return Measure.valueOf(median, this.dataDefaultUnit);
+        return Measure.valueOf(median, getDataDefaultUnit());
     }
 
     @Override
     protected Measure<Double, Quantity> calculateStatisticalCharacterizationContinuous(
             Iterable<MeasuringValue> windowData) {
 
-        Measure<Double, Quantity> median = Measure.valueOf(0d, this.dataDefaultUnit);
+        Measure<Double, Quantity> median = Measure.valueOf(0d, getDataDefaultUnit());
         Iterator<MeasuringValue> iterator = windowData.iterator();
 
         List<Interval> intervalsInWindow = new ArrayList<>();
@@ -100,7 +88,7 @@ public class MedianAggregator extends StatisticalCharacterizationAggregator {
                     .orElseThrow(() -> new AssertionError(
                             "There must be a point where the aggregated area is larger than half of the total area!"));
 
-            median = sortedIntervals[medianIndex].getValueAsMeasure().to(this.dataDefaultUnit);
+            median = sortedIntervals[medianIndex].getValueAsMeasure().to(super.getDataDefaultUnit());
         }
         return median;
     }

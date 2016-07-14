@@ -1,6 +1,5 @@
 package org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators;
 
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -13,11 +12,10 @@ import javax.measure.unit.SI;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
-import org.palladiosimulator.recorderframework.IRecorder;
 
 /**
- * {@link SlidingWindowAggregator} which computes the geometric mean from the measurements in the
- * window once it moves on:<br>
+ * {@link SlidingWindowAggregator} which computes the geometric mean of a sequence of measurements:
+ * <br>
  * GM=(x<sub>1</sub> * x<sub>2</sub> * ... * x<sub>n</sub>) ^ 1/n
  * 
  * @author Florian Rosenthal
@@ -29,15 +27,6 @@ public class GeometricMeanAggregator extends StatisticalCharacterizationAggregat
         super(expectedWindowMetric);
     }
 
-    public GeometricMeanAggregator(IRecorder recorderToWriteInto, NumericalBaseMetricDescription expectedWindowMetric) {
-        super(recorderToWriteInto, expectedWindowMetric);
-    }
-
-    public GeometricMeanAggregator(Collection<IRecorder> recordersToWriteInto,
-            NumericalBaseMetricDescription expectedWindowMetric) {
-        super(recordersToWriteInto, expectedWindowMetric);
-    }
-
     @Override
     protected Measure<Double, Quantity> calculateStatisticalCharaterizationDiscrete(
             Iterable<MeasuringValue> windowData) {
@@ -45,14 +34,14 @@ public class GeometricMeanAggregator extends StatisticalCharacterizationAggregat
                 .collect(Collectors.averagingDouble(m -> Math.log(this.obtainDataValueFromMeasurement(m))));
         double geometricMean = Double.compare(meanOfLogs, 0d) == 0 ? 0d : Math.exp(meanOfLogs);
 
-        return Measure.valueOf(geometricMean, this.dataDefaultUnit);
+        return Measure.valueOf(geometricMean, super.getDataDefaultUnit());
     }
 
     @Override
     protected Measure<Double, Quantity> calculateStatisticalCharacterizationContinuous(
             Iterable<MeasuringValue> windowData) {
 
-        Measure<Double, Quantity> geometricMean = Measure.valueOf(0d, this.dataDefaultUnit);
+        Measure<Double, Quantity> geometricMean = Measure.valueOf(0d, super.getDataDefaultUnit());
         Iterator<MeasuringValue> iterator = windowData.iterator();
 
         if (iterator.hasNext()) {
@@ -77,8 +66,8 @@ public class GeometricMeanAggregator extends StatisticalCharacterizationAggregat
                 }
             } while (nextMeasurement.isPresent());
 
-            geometricMean = Measure.valueOf(Math.exp(sumOfLogs / this.windowLength.doubleValue(SI.SECOND)),
-                    this.dataDefaultUnit);
+            geometricMean = Measure.valueOf(Math.exp(sumOfLogs / super.getIntervalLength().doubleValue(SI.SECOND)),
+                    super.getDataDefaultUnit());
         }
         return geometricMean;
     }
