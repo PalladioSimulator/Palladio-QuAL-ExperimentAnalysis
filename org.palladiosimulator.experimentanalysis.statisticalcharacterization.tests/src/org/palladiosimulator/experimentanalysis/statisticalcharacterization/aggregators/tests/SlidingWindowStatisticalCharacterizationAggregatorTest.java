@@ -19,11 +19,12 @@ import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.monitorrepository.statisticalcharacterization.StatisticalCharacterizationAggregator;
 
-public abstract class StatisticalCharacterizationAggregatorTest extends SlidingWindowAggregatorTest {
+public abstract class SlidingWindowStatisticalCharacterizationAggregatorTest extends SlidingWindowAggregatorTest {
 
     private static final MetricSetDescription WINDOW_DATA_METRIC = MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE;
-    protected static final NumericalBaseMetricDescription RESULT_METRIC = (NumericalBaseMetricDescription) MetricDescriptionConstants.RESPONSE_TIME_METRIC;
+    private static final NumericalBaseMetricDescription RESULT_METRIC = (NumericalBaseMetricDescription) MetricDescriptionConstants.RESPONSE_TIME_METRIC;
 
     private Measure<Double, Duration> almostZeroResponseTime;
     private Measure<Double, Duration> secondsResponseTime;
@@ -41,7 +42,8 @@ public abstract class StatisticalCharacterizationAggregatorTest extends SlidingW
     @Before
     public void setUp() throws Exception {
         super.setUp();
-        this.aggregatorUnderTest = getAggregatorUnderTest();
+        this.aggregatorUnderTest = new SlidingWindowStatisticalCharacterizationAggregator(this.dummyRecorder,
+                getStatisticalCharacterizationAggregator(RESULT_METRIC));
         this.almostZeroResponseTime = Measure.valueOf(0.1d, SI.SECOND);
         this.secondsResponseTime = Measure.valueOf(5.5d, SI.SECOND);
         this.milliSecondsResponseTime = Measure.valueOf(2500d, SI.MILLI(SI.SECOND));
@@ -53,7 +55,8 @@ public abstract class StatisticalCharacterizationAggregatorTest extends SlidingW
                 getExpectedAggregatedResponseTimeSecondTest());
     }
 
-    protected abstract SlidingWindowStatisticalCharacterizationAggregator getAggregatorUnderTest();
+    protected abstract StatisticalCharacterizationAggregator getStatisticalCharacterizationAggregator(
+            NumericalBaseMetricDescription expectedMetric);
 
     /**
      * Response times to aggregate: 0.1s, 5.5s, 2500ms, 30min

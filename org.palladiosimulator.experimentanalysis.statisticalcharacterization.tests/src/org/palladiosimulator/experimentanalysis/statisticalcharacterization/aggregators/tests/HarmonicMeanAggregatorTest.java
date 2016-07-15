@@ -4,16 +4,16 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.SlidingWindowStatisticalCharacterizationAggregator;
+import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.monitorrepository.statisticalcharacterization.HarmonicMeanAggregator;
 import org.palladiosimulator.monitorrepository.statisticalcharacterization.StatisticalCharacterizationAggregator;
 
-public class HarmonicMeanAggregatorTest extends StatisticalCharacterizationAggregatorTest {
+public class HarmonicMeanAggregatorTest extends SlidingWindowStatisticalCharacterizationAggregatorTest {
 
     @Override
-    protected SlidingWindowStatisticalCharacterizationAggregator getAggregatorUnderTest() {
-        StatisticalCharacterizationAggregator aggregator = new HarmonicMeanAggregator(RESULT_METRIC);
-        return new SlidingWindowStatisticalCharacterizationAggregator(this.dummyRecorder, aggregator);
+    protected StatisticalCharacterizationAggregator getStatisticalCharacterizationAggregator(
+            NumericalBaseMetricDescription expectedMetric) {
+        return new HarmonicMeanAggregator(expectedMetric);
     }
 
     @Override
