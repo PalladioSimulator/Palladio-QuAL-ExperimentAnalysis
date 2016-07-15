@@ -21,4 +21,15 @@
             id="org.palladiosimulator.experimentanalysis.utilizationfilter.UtilizationFilterInputFactory">
       </factory>
    </extension>
+   <extension
+         point="org.palladiosimulator.edp2.visualization.filter">
+                  <filter
+                        class="org.palladiosimulator.experimentanalysis.utilizationfilter.UtilizationFilter"
+                        factory="org.palladiosimulator.experimentanalysis.utilizationfilter.UtilizationFilterInputFactory"
+                        id="org.palladiosimulator.experimentanalysis.utilizationfilter.UtilizationFilter"
+                        name="Sliding Window Utilization Filter"
+                        wizard="org.palladiosimulator.edp2.visualization.DefaultFilterPropertiesWizard">
+            
+      	</filter>
+   </extension>
 </plugin>

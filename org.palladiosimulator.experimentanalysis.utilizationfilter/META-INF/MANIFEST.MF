@@ -14,7 +14,8 @@ Require-Bundle: org.eclipse.ui,
  org.jscience,
  org.palladiosimulator.recorderframework;bundle-version="2.0.1";visibility:=reexport,
  org.palladiosimulator.experimentanalysis;visibility:=reexport,
- org.palladiosimulator.edp2.util
+ org.palladiosimulator.edp2.util,
+ org.palladiosimulator.edp2.visualization;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.experimentanalysis.utilizationfilter
