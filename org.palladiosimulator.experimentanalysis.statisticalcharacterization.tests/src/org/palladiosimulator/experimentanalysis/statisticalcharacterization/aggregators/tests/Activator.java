@@ -1,4 +1,4 @@
-package org.palladiosimulator.experimentanalysis.statisticalcharacterization.tests;
+package org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.tests;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

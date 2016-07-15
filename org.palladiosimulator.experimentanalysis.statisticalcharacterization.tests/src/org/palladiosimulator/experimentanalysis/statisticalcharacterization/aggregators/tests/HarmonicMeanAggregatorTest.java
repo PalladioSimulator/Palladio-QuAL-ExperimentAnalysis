@@ -1,12 +1,12 @@
-package org.palladiosimulator.experimentanalysis.statisticalcharacterization.tests;
+package org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.tests;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.HarmonicMeanAggregator;
-import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.StatisticalCharacterizationAggregator;
-import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.slidingwindow.SlidingWindowStatisticalCharacterizationAggregator;
+import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.SlidingWindowStatisticalCharacterizationAggregator;
+import org.palladiosimulator.monitorrepository.statisticalcharacterization.HarmonicMeanAggregator;
+import org.palladiosimulator.monitorrepository.statisticalcharacterization.StatisticalCharacterizationAggregator;
 
 public class HarmonicMeanAggregatorTest extends StatisticalCharacterizationAggregatorTest {
 

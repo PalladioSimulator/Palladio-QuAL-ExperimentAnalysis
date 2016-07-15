@@ -1,4 +1,4 @@
-package org.palladiosimulator.experimentanalysis.statisticalcharacterization.tests;
+package org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,7 +12,7 @@ import javax.measure.unit.SI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.slidingwindow.SlidingWindowStatisticalCharacterizationAggregator;
+import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.SlidingWindowStatisticalCharacterizationAggregator;
 import org.palladiosimulator.experimentanalysis.windowaggregators.tests.SlidingWindowAggregatorTest;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
