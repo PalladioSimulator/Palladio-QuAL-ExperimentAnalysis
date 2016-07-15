@@ -1,4 +1,4 @@
-package org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.slidingwindow;
+package org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators;
 
 import java.util.Collection;
 import java.util.Objects;
@@ -8,11 +8,11 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
 import org.jscience.physics.amount.Amount;
-import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.StatisticalCharacterizationAggregator;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
+import org.palladiosimulator.monitorrepository.statisticalcharacterization.StatisticalCharacterizationAggregator;
 import org.palladiosimulator.recorderframework.IRecorder;
 
 /**
