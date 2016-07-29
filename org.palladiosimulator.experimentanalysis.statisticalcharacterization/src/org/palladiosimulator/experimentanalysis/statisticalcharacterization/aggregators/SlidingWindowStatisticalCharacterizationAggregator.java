@@ -10,8 +10,8 @@ import javax.measure.quantity.Duration;
 import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
-import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
+import org.palladiosimulator.monitorrepository.StatisticalCharacterization;
 import org.palladiosimulator.monitorrepository.statisticalcharacterization.StatisticalCharacterizationAggregator;
 import org.palladiosimulator.recorderframework.IRecorder;
 
@@ -19,6 +19,8 @@ import org.palladiosimulator.recorderframework.IRecorder;
  * Specialization of the {@link SlidingWindowAggregator} which is devoted to aggregate the
  * measurements collected by a sliding window in a statistical manner. That is, subclasses of this
  * class shall calculate some statistical measure/characteristic variable.
+ * 
+ * @see StatisticalCharacterization
  * 
  * @author Florian Rosenthal
  *
@@ -31,11 +33,11 @@ public class SlidingWindowStatisticalCharacterizationAggregator extends SlidingW
      * Initializes a new instance of the {@link SlidingWindowStatisticalCharacterizationAggregator}
      * class with the given parameter.
      * 
-     * @param expectedWindowMetric
-     *            The {@link NumericalBaseMetricDescription} that describes which kind of
-     *            measurements are expected to aggregate.
+     * @param aggregator
+     *            The {@link StatisticalCharacterizationAggregator} that shall be used for
+     *            aggregation of the collected window data.
      * @throws NullPointerException
-     *             In case {@code expectedWindowMetric == null}.
+     *             In case {@code aggregator == null}.
      */
     public SlidingWindowStatisticalCharacterizationAggregator(StatisticalCharacterizationAggregator aggregator) {
         this.aggregator = Objects.requireNonNull(aggregator);
@@ -47,11 +49,11 @@ public class SlidingWindowStatisticalCharacterizationAggregator extends SlidingW
      * 
      * @param recorderToWriteInto
      *            An {@link IRecorder} implementation to write the aggregated data into.
-     * @param expectedWindowMetric
-     *            The {@link NumericalBaseMetricDescription} that describes which kind of
-     *            measurements are expected to aggregate.
+     * @param aggregator
+     *            The {@link StatisticalCharacterizationAggregator} that shall be used for
+     *            aggregation of the collected window data.
      * @throws NullPointerException
-     *             In case {@code expectedWindowMetric == null}.
+     *             In case {@code aggregator == null || recorderToWriteInto == null}.
      */
     public SlidingWindowStatisticalCharacterizationAggregator(IRecorder recorderToWriteInto,
             StatisticalCharacterizationAggregator aggregator) {
@@ -67,11 +69,13 @@ public class SlidingWindowStatisticalCharacterizationAggregator extends SlidingW
      * @param recordersToWriteInto
      *            A Collection of {@link IRecorder} implementations to write the aggregated data
      *            into.
-     * @param expectedWindowMetric
-     *            The {@link MetricSetDescription} that describes which kind of measurements are
-     *            expected to aggregate.
+     * @param aggregator
+     *            The {@link StatisticalCharacterizationAggregator} that shall be used for
+     *            aggregation of the collected window data.
      * @throws NullPointerException
-     *             In case {@code expectedWindowMetric == null}.
+     *             In case {@code aggregator == null || recordersToWriteInto == null}.
+     * @throws IllegalArgumentException
+     *             In case the passed recorder collection is empty.
      */
     public SlidingWindowStatisticalCharacterizationAggregator(Collection<IRecorder> recordersToWriteInto,
             StatisticalCharacterizationAggregator aggregator) {
@@ -82,6 +86,7 @@ public class SlidingWindowStatisticalCharacterizationAggregator extends SlidingW
     /**
      * @return A {@link NumericalBaseMetricDescription} indicating the type of measurements this
      *         aggregator can process.
+     * @see StatisticalCharacterizationAggregator#getDataMetric()
      */
     @Override
     public final NumericalBaseMetricDescription getExpectedWindowDataMetric() {
