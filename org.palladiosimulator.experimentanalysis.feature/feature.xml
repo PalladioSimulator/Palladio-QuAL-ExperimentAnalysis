@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.palladiosimulator.experimentanalysis.feature"
+      label="Experiment Analysis Feature"
+      version="1.0.0.qualifier"
+      plugin="org.palladiosimulator.branding"
+      license-feature="org.palladiosimulator.license"
+      license-feature-version="1.0.0">
+
+   <description>
+      PCM addon that contains additional general-purpose performance analysis features.
+   </description>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.palladiosimulator.commons"/>
+      <import plugin="org.jscience"/>
+      <import plugin="org.palladiosimulator.metricspec"/>
+      <import plugin="org.palladiosimulator.measurementframework"/>
+      <import plugin="org.palladiosimulator.recorderframework"/>
+      <import plugin="org.palladiosimulator.edp2"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.palladiosimulator.edp2" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.recorderframework.edp2" version="2.0.1" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.edp2.datastream"/>
+      <import plugin="org.palladiosimulator.recorderframework" version="2.0.1" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.experimentanalysis"/>
+   </requires>
+
+   <plugin
+         id="org.palladiosimulator.experimentanalysis"
+         download-size="0"
+         install-size="0"
+         version="1.0.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.experimentanalysis.utilizationfilter"
+         download-size="0"
+         install-size="0"
+         version="2.0.0.qualifier"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.branding"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
