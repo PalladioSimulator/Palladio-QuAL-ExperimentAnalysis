@@ -17,8 +17,7 @@ import org.palladiosimulator.recorderframework.IRecorder;
 
 /**
  * Specialization of the {@link SlidingWindowAggregator} which is devoted to aggregate the
- * measurements collected by a sliding window in a statistical manner. That is, subclasses of this
- * class shall calculate some statistical measure/characteristic variable.
+ * measurements collected by a sliding window in a statistical manner.
  * 
  * @see StatisticalCharacterization
  * 
@@ -39,7 +38,7 @@ public class SlidingWindowStatisticalCharacterizationAggregator extends SlidingW
      * @throws NullPointerException
      *             In case {@code aggregator == null}.
      */
-    public SlidingWindowStatisticalCharacterizationAggregator(StatisticalCharacterizationAggregator aggregator) {
+    public SlidingWindowStatisticalCharacterizationAggregator(final StatisticalCharacterizationAggregator aggregator) {
         this.aggregator = Objects.requireNonNull(aggregator);
     }
 
@@ -55,8 +54,8 @@ public class SlidingWindowStatisticalCharacterizationAggregator extends SlidingW
      * @throws NullPointerException
      *             In case {@code aggregator == null || recorderToWriteInto == null}.
      */
-    public SlidingWindowStatisticalCharacterizationAggregator(IRecorder recorderToWriteInto,
-            StatisticalCharacterizationAggregator aggregator) {
+    public SlidingWindowStatisticalCharacterizationAggregator(final IRecorder recorderToWriteInto,
+            final StatisticalCharacterizationAggregator aggregator) {
         super(recorderToWriteInto);
 
         this.aggregator = Objects.requireNonNull(aggregator);
@@ -77,8 +76,8 @@ public class SlidingWindowStatisticalCharacterizationAggregator extends SlidingW
      * @throws IllegalArgumentException
      *             In case the passed recorder collection is empty.
      */
-    public SlidingWindowStatisticalCharacterizationAggregator(Collection<IRecorder> recordersToWriteInto,
-            StatisticalCharacterizationAggregator aggregator) {
+    public SlidingWindowStatisticalCharacterizationAggregator(final Collection<IRecorder> recordersToWriteInto,
+            final StatisticalCharacterizationAggregator aggregator) {
         super(recordersToWriteInto);
         this.aggregator = Objects.requireNonNull(aggregator);
     }
@@ -94,8 +93,8 @@ public class SlidingWindowStatisticalCharacterizationAggregator extends SlidingW
     }
 
     @Override
-    protected final MeasuringValue processWindowData(Iterable<MeasuringValue> windowData,
-            Measure<Double, Duration> windowLeftBound, Measure<Double, Duration> windowLength) {
+    protected final MeasuringValue processWindowData(final Iterable<MeasuringValue> windowData,
+            final Measure<Double, Duration> windowLeftBound, final Measure<Double, Duration> windowLength) {
 
         Amount<Duration> leftBound = Amount.valueOf(windowLeftBound.getValue(), windowLeftBound.getUnit());
         Amount<Duration> length = Amount.valueOf(windowLength.getValue(), windowLength.getUnit());
