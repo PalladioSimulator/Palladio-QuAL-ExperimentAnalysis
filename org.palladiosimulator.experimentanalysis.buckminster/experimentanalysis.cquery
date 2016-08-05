@@ -3,5 +3,5 @@
     <cq:property key="pass" value="anonymous"/>
     <cq:property key="user" value="anonymous"/>
     <cq:advisorNode namePattern="^org\.palladiosimulator\.experimentanalysis.*" useWorkspace="false"/>
-    <cq:advisorNode namePattern=".*" sourceLevel="AVOID"/>
+    <cq:advisorNode namePattern=".*" sourceLevel="REJECT"/>
 </cq:componentQuery>
