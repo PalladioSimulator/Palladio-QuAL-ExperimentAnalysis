@@ -2,6 +2,8 @@
     <cq:rootRequest name="org.palladiosimulator.experimentanalysis.buckminster" componentType="eclipse.feature"/>
     <cq:property key="pass" value="anonymous"/>
     <cq:property key="user" value="anonymous"/>
-    <cq:advisorNode namePattern="^org\.palladiosimulator\.experimentanalysis.*" useWorkspace="false"/>
+    <cq:advisorNode namePattern="^org\.palladiosimulator\.experimentanalysis.*" sourceLevel="REQUIRE" useWorkspace="false"/>
+    <cq:advisorNode namePattern="^org\.palladiosimulator\.license$" sourceLevel="REQUIRE" useWorkspace="false"/>
+    <cq:advisorNode namePattern="^org\.palladiosimulator\.branding$" sourceLevel="REQUIRE" useWorkspace="false"/>
     <cq:advisorNode namePattern=".*" sourceLevel="REJECT"/>
 </cq:componentQuery>
