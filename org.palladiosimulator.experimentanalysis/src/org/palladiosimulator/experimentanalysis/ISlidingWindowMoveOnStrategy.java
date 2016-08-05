@@ -15,6 +15,7 @@ import org.palladiosimulator.measurementframework.MeasuringValue;
  * @author Florian Rosenthal
  *
  */
+@FunctionalInterface
 public interface ISlidingWindowMoveOnStrategy {
     /**
      * This method specifies how the collected data (i.e., the measurements) are adjusted when the
