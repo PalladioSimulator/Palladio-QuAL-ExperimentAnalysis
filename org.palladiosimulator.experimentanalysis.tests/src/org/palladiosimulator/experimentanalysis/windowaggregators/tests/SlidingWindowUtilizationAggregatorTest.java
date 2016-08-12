@@ -1,7 +1,6 @@
 package org.palladiosimulator.experimentanalysis.windowaggregators.tests;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.mapping;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -26,14 +25,22 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
 public class SlidingWindowUtilizationAggregatorTest extends SlidingWindowAggregatorTest {
 
-    private MeasuringValue emptyUtilizationMeasurement;
+    protected MeasuringValue emptyUtilizationMeasurement;
     private MeasuringValue expectedNotEmptyUtilizationMeasurement;
-    private MetricSetDescription expectedWindowDataMetric;
-    private Measure<Long, Dimensionless> idleStateMeasure;
-    private Measure<Long, Dimensionless> busyStateMeasure;
-    // constant that denotes the maximum delta between double values for which both numbers are
-    // still considered equal
-    private static final double DELTA = Math.pow(10, -12);
+    protected MetricSetDescription expectedWindowDataMetric;
+    /**
+     * indicates an idle resource without active processes
+     */
+    protected Measure<Long, Dimensionless> idleStateMeasure;
+    /**
+     * indicates a busy resource with 42 active processes
+     */
+    protected Measure<Long, Dimensionless> busyStateMeasure;
+    /**
+     * constant that denotes the maximum delta between double values for which both numbers are
+     * still considered equal
+     */
+    protected static final double DELTA = Math.pow(10, -12);
 
     @Override
     @Before
@@ -54,13 +61,12 @@ public class SlidingWindowUtilizationAggregatorTest extends SlidingWindowAggrega
         super.tearDown();
     }
 
-    private MeasuringValue createUtilizationTupleMeasurement(double utilization) {
+    private MeasuringValue createUtilizationTupleMeasurement(final double utilization) {
 
-        Measure<Double, Dimensionless> resultUtilizationMeasure = Measure.valueOf(utilization, Unit.ONE);
-        Measure<Double, Duration> resultPointInTimeMeasure = Measure
-                .valueOf(this.currentLowerBound.getValue() + this.windowLength.getValue(), SI.SECOND);
+        Measure<Double, Duration> resultPointInTimeMeasure = Measure.valueOf(
+                this.currentLowerBound.doubleValue(SI.SECOND) + this.windowLength.doubleValue(SI.SECOND), SI.SECOND);
         return new TupleMeasurement(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE,
-                resultPointInTimeMeasure, resultUtilizationMeasure);
+                resultPointInTimeMeasure, Measure.valueOf(utilization, Unit.ONE));
     }
 
     private MeasuringValue createEmptyUtilizationTupleMeasurement() {
@@ -133,6 +139,11 @@ public class SlidingWindowUtilizationAggregatorTest extends SlidingWindowAggrega
         // [3-5]: 3s idleness
     }
 
+    @Test(expected = NullPointerException.class)
+    public void testSlidingWindowUtilizationAggregatorCtorNullMetric() {
+        new SlidingWindowUtilizationAggregator(null, this.dummyRecorder);
+    }
+
     @Test(expected = IllegalArgumentException.class)
     public void testSlidingWindowUtilizationAggregatorCtorWrongMetric() {
         MetricDescription wrongMetric = MetricDescriptionConstants.COST_OVER_TIME;
@@ -148,7 +159,7 @@ public class SlidingWindowUtilizationAggregatorTest extends SlidingWindowAggrega
     public void testGetAllowedWindowDataMetrics() {
         // compare ids of metrics rather than metrics directly
         List<String> allowedMetricIds = SlidingWindowUtilizationAggregator.getAllowedWindowDataMetrics().stream()
-                .collect(mapping(MetricDescription::getId, toList()));
+                .map(MetricDescription::getId).collect(toList());
 
         assertEquals(2, allowedMetricIds.size());
 
@@ -177,19 +188,19 @@ public class SlidingWindowUtilizationAggregatorTest extends SlidingWindowAggrega
     }
 
     @Test
-    public void testOnSlidingWindowFullUtilizationDifferentTimeUnits() {
+    public void testOnSlidingWindowFullUtilizationDifferentDurationUnits() {
         addStateOfActiveResourceTupleMeasurementsUtilizationDifferentDurationUnits();
         this.aggregatorUnderTest.onSlidingWindowFull(this.data, this.currentLowerBound, this.windowLength);
         assertLastRecordedMeasurementEquals(this.expectedNotEmptyUtilizationMeasurement);
     }
 
-    private void assertLastRecordedMeasurementEquals(MeasuringValue expected) {
+    protected final void assertLastRecordedMeasurementEquals(final MeasuringValue expected) {
         MeasuringValue lastMeasurement = this.dummyRecorder.getLastMeasurement();
         assertNotNull(lastMeasurement);
         assertMeasurementsEqual(expected, lastMeasurement);
     }
 
-    private static void assertMeasurementsEqual(MeasuringValue expected, MeasuringValue actual) {
+    private static void assertMeasurementsEqual(final MeasuringValue expected, final MeasuringValue actual) {
         Measure<Double, Dimensionless> expectedUtilization = expected
                 .getMeasureForMetric(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE);
         Measure<Double, Dimensionless> actualUtilization = actual
@@ -199,8 +210,9 @@ public class SlidingWindowUtilizationAggregatorTest extends SlidingWindowAggrega
         Measure<Double, Duration> actualPointInTime = actual
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
-        assertEquals(expectedUtilization.getValue(), actualUtilization.getValue(), DELTA);
-        assertEquals(expectedPointInTime.getValue(), actualPointInTime.getValue(), DELTA);
+        // ensure that compared values are given in the same unit
+        assertEquals(expectedUtilization.doubleValue(Unit.ONE), actualUtilization.doubleValue(Unit.ONE), DELTA);
+        assertEquals(expectedPointInTime.doubleValue(SI.SECOND), actualPointInTime.doubleValue(SI.SECOND), DELTA);
 
     }
 
