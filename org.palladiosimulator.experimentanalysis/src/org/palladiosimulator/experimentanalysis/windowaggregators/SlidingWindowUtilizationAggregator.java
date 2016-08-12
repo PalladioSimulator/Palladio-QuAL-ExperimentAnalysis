@@ -43,15 +43,15 @@ import org.palladiosimulator.recorderframework.IRecorder;
  */
 public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator {
 
-    private static final Amount<Duration> ZERO_DURATION = Amount.valueOf(0, SI.SECOND);
+    protected static final Amount<Duration> ZERO_DURATION = Amount.valueOf(0, SI.SECOND);
 
     /**
-     * map tuple metrics of measurements that can be processed to their respective numerical base /*
+     * map tuple metrics of measurements that can be processed to their respective numerical base
      * metric containing the 'state of active resource' values to be aggregated
      * 
      * @see #obtainStateValueFromMeasurement(MeasuringValue)
      */
-    private static final Map<MetricDescription, NumericalBaseMetricDescription> EXPECTED_WINDOW_METRICS_MAP = new HashMap<MetricDescription, NumericalBaseMetricDescription>();
+    private static final Map<MetricDescription, NumericalBaseMetricDescription> EXPECTED_WINDOW_METRICS_MAP = new HashMap<>();
 
     // for convenience, store the key set
     private static final Collection<MetricDescription> EXPECTED_WINDOW_DATA_METRICS = EXPECTED_WINDOW_METRICS_MAP
@@ -78,14 +78,20 @@ public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator 
      * Initializes a new instance of the {@link SlidingWindowUtilizationAggregator} class with the
      * given parameter.
      * 
+     * @param windowDataMetric
+     *            The {@link MetricDescription} of the measurements to be processed, i.e, which are
+     *            used to compute the utilization.
      * @param recorderToWriteInto
      *            An {@link IRecorder} this instance writes the aggregated window data into.
      *            Typically, a recorder that writes into a persistence framework like EDP 2 is
      *            passed here.
      * @throws NullPointerException
      *             If either argument is {@code null}.
+     * @throws IllegalArgumentException
+     *             If the given metric is not supported by this aggregator.
      */
-    public SlidingWindowUtilizationAggregator(MetricDescription windowDataMetric, IRecorder recorderToWriteInto) {
+    public SlidingWindowUtilizationAggregator(final MetricDescription windowDataMetric,
+            final IRecorder recorderToWriteInto) {
         super(recorderToWriteInto);
         Objects.requireNonNull(windowDataMetric, "Given metric must not be null.");
         // get the expected metric (based on id equality)
@@ -98,8 +104,8 @@ public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator 
     }
 
     @Override
-    protected MeasuringValue processWindowData(Iterable<MeasuringValue> windowData,
-            Measure<Double, Duration> windowLeftBound, Measure<Double, Duration> windowLength) {
+    protected MeasuringValue processWindowData(final Iterable<MeasuringValue> windowData,
+            final Measure<Double, Duration> windowLeftBound, final Measure<Double, Duration> windowLength) {
 
         Amount<Duration> windowLeftBoundAmount = Amount.valueOf(windowLeftBound.getValue(), windowLeftBound.getUnit());
         Amount<Duration> windowLengthAmount = Amount.valueOf(windowLength.getValue(), windowLength.getUnit());
@@ -166,8 +172,8 @@ public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator 
      * @return A {@link MeasuringValue} denoting the utilization {@code U} which is calculated as
      *         follows: {@code U = busyTime / windowLength}.
      */
-    private static MeasuringValue createUtilizationTupleMeasurement(Amount<Duration> busyTime,
-            Amount<Duration> windowLength, Amount<Duration> pointInTime) {
+    private static MeasuringValue createUtilizationTupleMeasurement(final Amount<Duration> busyTime,
+            final Amount<Duration> windowLength, final Amount<Duration> pointInTime) {
 
         assert windowLength.isGreaterThan(ZERO_DURATION);
 
@@ -190,10 +196,27 @@ public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator 
      * @return An {@link Amount} that represents the {@code point in time} the given measurement was
      *         taken.
      */
-    private static Amount<Duration> obtainPointInTimeAmountFromMeasurement(MeasuringValue measurement) {
-        Measure<Double, Duration> measure = measurement
-                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        return Amount.valueOf(measure.getValue(), measure.getUnit());
+    protected static Amount<Duration> obtainPointInTimeAmountFromMeasurement(final MeasuringValue measurement) {
+        Measure<?, Duration> measure = measurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        return Amount.valueOf(measure.doubleValue(measure.getUnit()), measure.getUnit());
+    }
+
+    /**
+     * Gets the {@code state of active resource} measurement captured by the given measuring value.
+     * 
+     * @param measurement
+     *            A ({@code not null}) {@link MeasuringValue} instance containing a dimensionless
+     *            {@code state of active resource} measurement, or, in case of multi-core
+     *            utilization, a {@code utilization of active resource} measurement.
+     * @return A {@link Dimensionless} {@link Amount} denoting the {@code state of active resource}
+     *         .
+     */
+    protected Amount<Dimensionless> obtainStateAmountFromMeasurement(final MeasuringValue measurement) {
+        assert measurement != null && measurement.isCompatibleWith(this.windowDataMetric);
+
+        Measure<?, Dimensionless> measure = measurement.getMeasureForMetric(this.stateOfResourceMetric);
+
+        return Amount.valueOf(measure.doubleValue(measure.getUnit()), measure.getUnit());
     }
 
     /**
@@ -201,10 +224,11 @@ public class SlidingWindowUtilizationAggregator extends SlidingWindowAggregator 
      * 
      * @param measurement
      *            A ({@code not null}) {@link MeasuringValue} instance containing a dimensionless
-     *            {@code 'state of active resource'} measure.
+     *            {@code state of active resource} measurement, or, in case of multi-core
+     *            utilization, a {@code utilization of active resource} measurement.
      * @return A <b>nonnegative</b> double denoting the {@code state of active resource} value.
      */
-    private double obtainStateValueFromMeasurement(MeasuringValue measurement) {
+    private double obtainStateValueFromMeasurement(final MeasuringValue measurement) {
         assert measurement != null && measurement.isCompatibleWith(this.windowDataMetric);
 
         Measure<?, Dimensionless> measure = measurement.getMeasureForMetric(this.stateOfResourceMetric);
