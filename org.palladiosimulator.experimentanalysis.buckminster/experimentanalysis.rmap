@@ -2,7 +2,7 @@
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
   <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="experimentanalysissvn" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.servicelevelobjective.*" searchPathRef="ServiceLevelObjectives" failOnError="false"/>
-  <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/SimuLizar/trunk/org.palladiosimulator.simulizar.buckminster/simulizar.rmap"/>
+  <rm:redirect pattern=".*" href="https://raw.githubusercontent.com/PalladioSimulator/Palladio-Analyzer-SimuLizar/master/org.palladiosimulator.simulizar.buckminster/simulizar.rmap"/>
   
   <rm:searchPath name="localresources">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="local">
