@@ -14,6 +14,7 @@ import org.eclipse.ui.IPersistableElement;
 import org.palladiosimulator.edp2.datastream.IDataSource;
 import org.palladiosimulator.edp2.datastream.IDataStream;
 import org.palladiosimulator.edp2.datastream.configurable.PropertyConfigurable;
+import org.palladiosimulator.edp2.datastream.filter.AbstractAdapter;
 import org.palladiosimulator.edp2.datastream.filter.AbstractFilter;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
@@ -41,7 +42,7 @@ import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
  * @author Florian Rosenthal
  *
  */
-public final class UtilizationFilter extends AbstractFilter implements IPersistable, IPersistableElement {
+public final class UtilizationFilter extends AbstractAdapter implements IPersistable, IPersistableElement {
 
     // the result metric is also a valid input metric
     private static final MetricDescription FILTER_RESULT_METRIC = MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
@@ -51,7 +52,7 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
      * Initializes a new instance of the {@link UtilizationFilter} class.
      */
     public UtilizationFilter() {
-        super(FILTER_INPUT_METRIC);
+        super(FILTER_RESULT_METRIC);
     }
 
     /**
@@ -63,7 +64,11 @@ public final class UtilizationFilter extends AbstractFilter implements IPersista
      *             if the data source metric does not match the input metric expected by the filter.
      */
     public UtilizationFilter(final IDataSource datasource) {
-        super(datasource, FILTER_INPUT_METRIC);
+    	super(datasource, FILTER_RESULT_METRIC);
+    	
+    	if (!datasource.isCompatibleWith(FILTER_INPUT_METRIC)) {
+            throw new IllegalArgumentException("The data source does not provide the necessary input metric for this adapter!");
+        }
     }
 
     @Override
