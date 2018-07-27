@@ -6,6 +6,8 @@
 	<feature url="features/org.palladiosimulator.experimentanalysis.feature.source_1.0.0.qualifier.jar" id="org.palladiosimulator.experimentanalysis.feature.source" version="1.0.0.qualifier">
 	   <category name="org.palladiosimulator.qual.source.category"/>
 	</feature>
+	<feature url="features/org.palladiosimulator.experimentanalysis.tests.feature_1.0.0.qualifier.jar" id="org.palladiosimulator.experimentanalysis.tests.feature" version="1.0.0.qualifier"/>
+	<feature url="features/org.palladiosimulator.experimentanalysis.tests.feature.source_1.0.0.qualifier.jar" id="org.palladiosimulator.experimentanalysis.tests.feature.source" version="1.0.0.qualifier"/>
 	<category-def name="org.palladiosimulator.qual.category" label="Quality Analysis Lab">
 	   <description>
 	      The Quality Analysis Lab (QuAL) is responsible for taking measurements from experiments or simulations and their persistance

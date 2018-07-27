@@ -13,6 +13,7 @@
 	
 	<modules>
 		<module>org.palladiosimulator.experimentanalysis.feature</module>
+		<module>org.palladiosimulator.experimentanalysis.tests.feature</module>
 	</modules>
 	
 </project>
