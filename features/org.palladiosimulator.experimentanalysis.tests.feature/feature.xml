@@ -11,6 +11,10 @@
       This feature is not indented to be installed by end-users.
    </description>
 
+   <requires>
+      <import plugin="org.palladiosimulator.branding"/>
+   </requires>
+
    <plugin
          id="org.palladiosimulator.experimentanalysis.tests"
          download-size="0"
