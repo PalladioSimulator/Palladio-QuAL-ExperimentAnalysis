@@ -1,4 +1,3 @@
-palladioBuild {
-	webserverDir = 'palladio/addons/experimentanalysis'
-	updateSiteLocation = 'releng/org.palladiosimulator.experimentanalysis.updatesite/target/repository'
+PalladioPipeline {
+    deployUpdatesite 'releng/org.palladiosimulator.experimentanalysis.updatesite/target/repository'
 }
