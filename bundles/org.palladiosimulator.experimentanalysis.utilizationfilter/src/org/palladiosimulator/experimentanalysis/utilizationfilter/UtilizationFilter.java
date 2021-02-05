@@ -16,6 +16,7 @@ import org.palladiosimulator.edp2.datastream.IDataStream;
 import org.palladiosimulator.edp2.datastream.configurable.PropertyConfigurable;
 import org.palladiosimulator.edp2.datastream.filter.AbstractAdapter;
 import org.palladiosimulator.edp2.datastream.filter.AbstractFilter;
+import org.palladiosimulator.edp2.datastream.filter.IFilter;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
@@ -42,7 +43,7 @@ import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
  * @author Florian Rosenthal
  *
  */
-public final class UtilizationFilter extends AbstractAdapter implements IPersistable, IPersistableElement {
+public final class UtilizationFilter extends AbstractAdapter implements IFilter, IPersistable, IPersistableElement {
 
     // the result metric is also a valid input metric
     private static final MetricDescription FILTER_RESULT_METRIC = MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
