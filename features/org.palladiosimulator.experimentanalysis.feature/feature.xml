@@ -20,11 +20,8 @@
       <import plugin="org.palladiosimulator.recorderframework"/>
       <import plugin="org.palladiosimulator.edp2"/>
       <import plugin="org.eclipse.ui"/>
-      <import plugin="org.palladiosimulator.edp2" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.recorderframework.edp2" version="2.0.1" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.edp2.datastream"/>
-      <import plugin="org.palladiosimulator.recorderframework" version="2.0.1" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.experimentanalysis"/>
       <import plugin="org.palladiosimulator.branding"/>
    </requires>
