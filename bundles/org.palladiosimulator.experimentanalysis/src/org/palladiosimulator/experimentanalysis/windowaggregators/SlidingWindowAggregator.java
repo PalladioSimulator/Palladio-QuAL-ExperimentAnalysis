@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Objects;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
 
 import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;

@@ -1,7 +1,7 @@
 package org.palladiosimulator.experimentanalysis.utilizationfilter;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
 
 import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;

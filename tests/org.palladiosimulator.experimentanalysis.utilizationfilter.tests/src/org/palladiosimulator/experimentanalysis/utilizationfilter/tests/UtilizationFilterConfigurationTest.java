@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
+import jakarta.measure.unit.SI;
 
 import org.junit.After;
 import org.junit.Before;

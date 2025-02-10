@@ -3,10 +3,10 @@ package org.palladiosimulator.experimentanalysis.utilizationfilter;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
+import jakarta.measure.unit.SI;
+import jakarta.measure.unit.Unit;
 
 import org.palladiosimulator.edp2.datastream.configurable.reflective.ConfigurationProperty;
 import org.palladiosimulator.edp2.datastream.configurable.reflective.ReflectivePropertyConfigurable;

@@ -5,8 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
 
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IPersistable;

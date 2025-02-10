@@ -2,8 +2,8 @@ package org.palladiosimulator.experimentanalysis;
 
 import java.util.Deque;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
 
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
