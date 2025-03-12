@@ -11,7 +11,7 @@ import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.measurementframework.MeasuringValue;
-import org.palladiosimulator.recorderframework.IRecorder;
+import org.palladiosimulator.recorderframework.core.IRecorder;
 
 /**
  * This class is the base class of all {@link ISlidingWindowListener} that aggregate/process the
