@@ -1,8 +1,8 @@
 package org.palladiosimulator.experimentanalysis.tests.utils;
 
 import org.palladiosimulator.measurementframework.MeasuringValue;
-import org.palladiosimulator.recorderframework.IRecorder;
-import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
+import org.palladiosimulator.recorderframework.core.IRecorder;
+import org.palladiosimulator.recorderframework.core.config.IRecorderConfiguration;
 
 /**
  * Dummy implementation of an {@link IRecorder} which just stores the most recently received (via

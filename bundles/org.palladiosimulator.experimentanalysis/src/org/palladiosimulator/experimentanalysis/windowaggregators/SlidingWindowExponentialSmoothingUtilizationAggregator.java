@@ -16,7 +16,7 @@ import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.recorderframework.IRecorder;
+import org.palladiosimulator.recorderframework.core.IRecorder;
 
 import com.google.common.collect.Iterators;
 import com.google.common.collect.PeekingIterator;

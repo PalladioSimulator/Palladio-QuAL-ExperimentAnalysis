@@ -24,7 +24,7 @@ import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.recorderframework.IRecorder;
+import org.palladiosimulator.recorderframework.core.IRecorder;
 
 /**
  * This class is a {@link SlidingWindowAggregator} implementation which calculates the utilization

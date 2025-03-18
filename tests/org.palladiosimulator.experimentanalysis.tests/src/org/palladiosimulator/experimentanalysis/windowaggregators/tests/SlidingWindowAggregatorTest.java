@@ -16,7 +16,7 @@ import org.palladiosimulator.experimentanalysis.tests.utils.StoreLastMeasurement
 import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowAggregator;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.recorderframework.IRecorder;
+import org.palladiosimulator.recorderframework.core.IRecorder;
 
 public abstract class SlidingWindowAggregatorTest {
 
