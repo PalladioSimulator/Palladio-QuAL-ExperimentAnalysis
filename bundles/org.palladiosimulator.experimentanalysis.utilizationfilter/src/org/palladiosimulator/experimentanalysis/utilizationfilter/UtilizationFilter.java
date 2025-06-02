@@ -22,8 +22,8 @@ import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowU
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.recorderframework.IRecorder;
-import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
+import org.palladiosimulator.recorderframework.core.IRecorder;
+import org.palladiosimulator.recorderframework.core.config.IRecorderConfiguration;
 
 /**
  * This class is a moving average implementation that calculates the utilization of an active
