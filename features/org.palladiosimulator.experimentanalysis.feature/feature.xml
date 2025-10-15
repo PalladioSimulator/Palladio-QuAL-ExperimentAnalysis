@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.experimentanalysis.feature"
       label="Experiment Analysis Feature"
-      version="5.2.1.qualifier"
+      version="5.2.2"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
@@ -30,14 +30,14 @@
          id="org.palladiosimulator.experimentanalysis"
          download-size="0"
          install-size="0"
-         version="5.2.1.qualifier"
+         version="5.2.2"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.experimentanalysis.utilizationfilter"
          download-size="0"
          install-size="0"
-         version="5.2.1.qualifier"
+         version="5.2.2"
          unpack="false"/>
 
 </feature>
