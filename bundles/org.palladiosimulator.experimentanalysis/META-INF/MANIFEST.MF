@@ -2,15 +2,15 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Experimentanalysis
 Bundle-SymbolicName: org.palladiosimulator.experimentanalysis
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.experimentanalysis.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.commons,
  org.jscience,
- org.palladiosimulator.metricspec;bundle-version="1.0.2",
- org.palladiosimulator.measurementframework;bundle-version="1.0.1",
- org.palladiosimulator.recorderframework.core;bundle-version="2.0.1",
- org.palladiosimulator.edp2;bundle-version="2.0.0",
+ org.palladiosimulator.metricspec,
+ org.palladiosimulator.measurementframework,
+ org.palladiosimulator.recorderframework.core,
+ org.palladiosimulator.edp2,
  org.palladiosimulator.edp2.util,
  com.google.guava;bundle-version="15.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-17

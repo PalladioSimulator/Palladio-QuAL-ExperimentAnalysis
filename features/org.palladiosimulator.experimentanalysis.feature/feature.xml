@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.experimentanalysis.feature"
       label="Experiment Analysis Feature"
-      version="5.2.2"
+      version="6.0.0.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
@@ -20,7 +20,7 @@
       <import plugin="org.palladiosimulator.recorderframework"/>
       <import plugin="org.palladiosimulator.edp2"/>
       <import plugin="org.eclipse.ui"/>
-      <import plugin="org.palladiosimulator.recorderframework.edp2" version="2.0.1" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.recorderframework.edp2"/>
       <import plugin="org.palladiosimulator.edp2.datastream"/>
       <import plugin="org.palladiosimulator.experimentanalysis"/>
       <import plugin="org.palladiosimulator.branding"/>
@@ -30,14 +30,14 @@
          id="org.palladiosimulator.experimentanalysis"
          download-size="0"
          install-size="0"
-         version="5.2.2"
+         version="6.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.experimentanalysis.utilizationfilter"
          download-size="0"
          install-size="0"
-         version="5.2.2"
+         version="6.0.0.qualifier"
          unpack="false"/>
 
 </feature>

@@ -2,17 +2,17 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Tests
 Bundle-SymbolicName: org.palladiosimulator.experimentanalysis.tests
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.experimentanalysis.tests.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.junit;bundle-version="4.11.0",
  org.palladiosimulator.experimentanalysis,
- org.palladiosimulator.metricspec;bundle-version="1.0.2",
+ org.palladiosimulator.metricspec,
  org.jscience,
- org.palladiosimulator.recorderframework;bundle-version="2.0.1",
+ org.palladiosimulator.recorderframework,
  org.palladiosimulator.measurementframework,
- org.palladiosimulator.commons;bundle-version="1.0.0",
- org.palladiosimulator.metricspec.resources;bundle-version="1.0.0"
+ org.palladiosimulator.commons,
+ org.palladiosimulator.metricspec.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.experimentanalysis.tests,
