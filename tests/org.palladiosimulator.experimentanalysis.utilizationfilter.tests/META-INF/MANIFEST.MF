@@ -15,5 +15,5 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.edp2,
  org.palladiosimulator.pcm.edp2.measuringpoint,
  org.palladiosimulator.commons
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy

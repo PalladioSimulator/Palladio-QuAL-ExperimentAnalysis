@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.measurementframework,
  org.palladiosimulator.commons,
  org.palladiosimulator.metricspec.resources
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.experimentanalysis.tests,
  org.palladiosimulator.experimentanalysis.tests.utils,
